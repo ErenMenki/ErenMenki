@@ -1,0 +1,6 @@
+:host ::ng-deep .mat-drawer-content {
+    padding: 0; display: block!important;
+} 
+.mat-drawer-container {
+    z-index: 1000
+}

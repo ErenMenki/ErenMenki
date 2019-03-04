@@ -1,0 +1,30 @@
+<div class="navigation">
+  <mat-nav-list viasAccordion class="navigation">
+    <div *ngFor="let menuitem of menuService.getAll()">
+      <mat-list-item viasAccordionlink group="{{menuitem.state}}"
+        *ngIf="menuitem.type != mt.divider || menuitem.type !== mt.title">
+        <a class="relative" [routerLink]="menuitem.state" *ngIf="menuitem.type === mt.link">
+          <mat-icon>{{ menuitem.icon }}</mat-icon>
+          <span>{{ menuitem.name | translate }}</span>
+          <span fxFlex></span>
+          <span class="menu-badge mat-{{ badge.type }}" *ngFor="let badge of menuitem.badge">{{ badge.value }}</span>
+        </a>
+        <a viasAccordionToggle class="relative" href="javascript:;" *ngIf="menuitem.type === mt.sub">
+          <mat-icon>{{ menuitem.icon }}</mat-icon>
+          <span>{{ menuitem.name | translate }}</span>
+          <span fxFlex></span>
+          <span class="menu-badge mat-{{ badge.type }}" *ngFor="let badge of menuitem.badge">{{ badge.value }}</span>
+          <mat-icon class="menu-caret">arrow_drop_down</mat-icon>
+        </a>
+        <mat-nav-list class="sub-menu" *ngIf="menuitem.type === mt.sub">
+          <mat-list-item *ngFor="let childitem of menuitem.children" routerLinkActive="open">
+            <a [routerLink]="['/', menuitem.state, childitem.state ]"
+              class="relative">{{ childitem.name | translate }}</a>
+          </mat-list-item>
+        </mat-nav-list>
+      </mat-list-item>
+      <mat-divider *ngIf="menuitem.type === mt.divider" class="my-1"></mat-divider>
+      <h5 mat-subheader *ngIf="menuitem.type === mt.title">{{ menuitem.name | translate }}</h5>
+    </div>
+  </mat-nav-list>
+</div>

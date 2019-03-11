@@ -46,6 +46,8 @@ import { AuthLayoutComponent } from './core/auth-layout/auth-layout.component';
 import { AccordionLinkDirective } from './core/nav-accordion/accordionlink.directive';
 import { AccordionAnchorDirective } from './core/nav-accordion/accordionanchor.directive';
 import { AccordionDirective } from './core/nav-accordion/accordion.directive';
+import { ComponentsModule } from './components/components.module';
+import { DenemeComponent } from './deneme/deneme.component';
 
 // Translation Script
 export function createTranslateLoader(http: HttpClient) {
@@ -67,6 +69,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     AccordionDirective,
     AccordionLinkDirective,
     AccordionAnchorDirective,
+    DenemeComponent,
   ],
   imports: [
     BrowserModule,
@@ -93,7 +96,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     MatProgressBarModule,
     FlexLayoutModule,
     LoadingBarModule,
-    PerfectScrollbarModule
+    PerfectScrollbarModule,
+    ComponentsModule
   ],
   providers: [
     GlobalsService,
@@ -102,6 +106,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
     }
+  ],
+  exports: [
+    ComponentsModule,
   ],
   bootstrap: [AppComponent]
 })

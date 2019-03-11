@@ -1,0 +1,25 @@
+<form (ngSubmit)="onSubmit()" [formGroup]="form">
+  <div fxLayout="column" fxLayoutAlign="space-around">
+    <div class="pb-1" *ngFor="let formItem of formItems">
+      <div [ngSwitch]="formItem.controlType">
+        <mat-form-field style="width: 100%" *ngSwitchCase="'textbox'">
+
+          <input matInput placeholder="{{formItem.label}}" [formControl]="form.controls[formItem.key]"
+            [formControlName]="formItem.key" [id]="formItem.key" [type]="formItem.type" />
+
+        </mat-form-field>
+        <mat-form-field style="width: 100%" *ngSwitchCase="'dropdown'">
+            <mat-select placeholder="{{formItem.label}}" [id]="formItem.key" [formControlName]="formItem.key">
+                <mat-option *ngFor="let opt of formItem.options" [value]="opt.key">{{opt.value}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <small *ngIf="form.controls[formItem.key].hasError('required') && form.controls[formItem.key].touched"
+        class="mat-text-warn">
+        {{formItem.label}} zorunlu alandir</small>
+    </div>
+    <div class="form-row">
+      <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">Kaydet</button>
+    </div>
+  </div>
+</form>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GlobalsService } from 'src/app/core/services/globals.service';
 import { ViasConnectionService, ViasResponse } from 'src/app/core/services/vias-connection.service';
+import { DataGridRefreshEvent, DataGridColumn, SortObject, SortType } from 'src/app/components/datagrid/datagrid.component';
 
 @Component({
   selector: 'vias-materials',
@@ -8,12 +9,13 @@ import { ViasConnectionService, ViasResponse } from 'src/app/core/services/vias-
   styleUrls: ['./materials.component.scss']
 })
 export class MaterialsComponent implements OnInit {
-
+  title = 'Stok';
+  columns: DataGridColumn[] = [];
+  dataSource: object[] = [];
+  sortObj: SortObject = { column_name: 'id', sort_type: SortType.Ascending };
   pageno: number = 1;
-  totalpage: number = 1;
+  totalPages: number = 1;
   filtersObj: object = {};
-  sortDescending: string = 'asc';
-  sortColumn: string = 'id';
 
   project_detail_id: number = 0;
   contractor_id: number = 0;
@@ -23,22 +25,18 @@ export class MaterialsComponent implements OnInit {
   constructor(public globals: GlobalsService, private viasService: ViasConnectionService) { }
 
   ngOnInit() {
+    this.createDGColumns();
     this.refreshData();
   }
 
 
   refreshData() {
-    const sortObj: object = {
-      column_name: this.sortColumn,
-      sort_type: this.sortDescending
-    };
-    this.viasService.send(2000, 0, {
-      sort: sortObj,
+    const sendData: object = {
+      sort: this.sortObj,
       page_no: this.pageno,
-      filters: this.filtersObj,
-      contractor_id: this.contractor_id,
-      project_detail_id: this.project_detail_id
-    }).then(response => {
+      filters: this.filtersObj
+    };
+    this.viasService.send(2000, 0, sendData).then(response => {
       this.serviceHandler(response);
     },
       err => {
@@ -46,6 +44,65 @@ export class MaterialsComponent implements OnInit {
       });
   }
   serviceHandler(r: ViasResponse) {
-    console.log(r);
+    if (r.data) {
+      console.log(r.data);
+      if (r.data['materials']) {
+        this.dataSource = r.data['materials'];
+      }
+      if (r.data['total_page']) {
+        this.totalPages = r.data['total_page'];
+      }
+      if (r.data['page_no']) {
+        this.pageno = r.data['page_no'];
+      }
+    }
+  }
+
+  onRefresh(event: DataGridRefreshEvent) {
+    console.log(event);
+  }
+
+
+  createDGColumns() {
+    this.columns = [
+      {
+        dataField: 'code',
+        headerText: 'Malzeme Kodu',
+        width: 100,
+        align: 'right',
+        footerData: 'deneme footer'
+      },
+      {
+        dataField: 'name',
+        headerText: 'Malzeme Tanımı',
+        widthPercent: 50,
+        align: 'left'
+      },
+      {
+        dataField: 'main_group_name',
+        headerText: 'Ana Grubu',
+        dataType: 'date'
+      },
+      {
+        dataField: 'group_name',
+        headerText: 'Grubu',
+        dataType: 'date'
+      },
+      {
+        dataField: 'purchase_unit_name',
+        headerText: 'S.Alma Birimi',
+        dataType: 'date'
+      },
+      {
+        dataField: 'min_stock',
+        headerText: 'Min Stok',
+        dataType: 'date'
+      },
+      {
+        dataField: 'max_stock',
+        headerText: 'Maks Stok',
+        dataType: 'date'
+      },
+    ];
   }
 }

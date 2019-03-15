@@ -1,9 +1,10 @@
 <h2>{{title}}</h2>
 <div style="background-color: white;">
-<vias-form-generator 
+{{formItems.length}}
+<vias-form 
   [formItems]="formItems"
-  (formSubmit)="onSubmit($event)"
-></vias-form-generator>
+  (submit)="onSubmit($event)"
+></vias-form>
  
 <div *ngIf="payLoad" class="form-row">
   <strong>Form Verileri Burada Cikicak</strong><br>{{payLoad}}

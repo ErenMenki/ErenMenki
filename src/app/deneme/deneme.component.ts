@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { DataGridRefreshEvent, DataGridColumn, SortObject, SortType } from 'src/app/components/datagrid/datagrid.component';
-import { FormItem, TextboxFormItem, DropdownFormItem } from '../components/form-generator/form-item';
-import { FormEvent } from '../components/form-generator/form-generator.component';
+import { FormItem, FormTypes } from '../components/form/form.component';
+import { Validators } from '@angular/forms';
+// import { FormItem, TextboxFormItem, DropdownFormItem } from '../components/form-generator/form-item';
+// import { FormEvent } from '../components/form-generator/form-generator.component';
 
 @Component({
   selector: 'vias-deneme',
@@ -29,7 +31,8 @@ export class DenemeComponent implements OnInit {
   totalPages: number = 1;
   filtersObj: object = {};
 
-  formItems: FormItem<any>[];
+  formItems: FormItem[];
+  // formItems: FormItem<any>[];
   payLoad = '';
 
   constructor() { }
@@ -39,35 +42,74 @@ export class DenemeComponent implements OnInit {
     this.createForm();
   }
 
-  onSubmit(event: FormEvent) {
-    this.payLoad = JSON.stringify(event.data);
-  }
+  // onSubmit(event: FormEvent) {
+  //   this.payLoad = JSON.stringify(event.data);
+  // }
 
 
   createForm() {
     this.formItems = [
-      new TextboxFormItem({
-        key: 'name',
-        label: 'Ad soyad',
-        value: 'Deneme adi',
-        required: true
-      }),
-      new DropdownFormItem({
-        key: 'school',
-        label: 'Egitim Duzeyi',
-        options: [
-          { key: '1', value: 'Lise' },
-          { key: '2', value: 'Universite' },
-          { key: '3', value: 'Master' },
-          { key: '4', value: 'Doktora' }
-        ],
-        order: 3
-      }),
-      new TextboxFormItem({
-        key: 'email',
-        label: 'Eposta Adresi',
-        type: 'email'
-      }),
+      {
+        type: FormTypes.Text,
+        label: 'Ad Soyad',
+        name: 'namesurname',
+        validations: [
+          {
+            name: 'required',
+            validator: Validators.required,
+            message: 'Ad soyad lazim bize'
+          },
+          {
+            name: 'pattern',
+            validator: Validators.pattern('^[a-zA-Z]+$'),
+            message: 'Zort Sadece text girebilirsin. rakam olmaz'
+          }
+        ]
+      },
+      {
+        type: FormTypes.Email,
+        label: 'Eposta ',
+        name: 'email',
+        validations: [
+          {
+            name: 'required',
+            validator: Validators.required,
+            message: 'Girin emaili rahat edin'
+          },
+          {
+            name: 'pattern',
+            validator: Validators.pattern(
+              '^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$'
+            ),
+            message: 'duzgun email girin '
+          }
+        ]
+      }
+
+
+
+      // new TextboxFormItem({
+      //   key: 'name',
+      //   label: 'Ad soyad',
+      //   value: 'Deneme adi',
+      //   required: true
+      // }),
+      // new DropdownFormItem({
+      //   key: 'school',
+      //   label: 'Egitim Duzeyi',
+      //   options: [
+      //     { key: '1', value: 'Lise' },
+      //     { key: '2', value: 'Universite' },
+      //     { key: '3', value: 'Master' },
+      //     { key: '4', value: 'Doktora' }
+      //   ],
+      //   order: 3
+      // }),
+      // new TextboxFormItem({
+      //   key: 'email',
+      //   label: 'Eposta Adresi',
+      //   type: 'email'
+      // }),
     ];
   }
 

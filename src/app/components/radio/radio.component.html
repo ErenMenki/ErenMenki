@@ -1,0 +1,6 @@
+<div [formGroup]="form">
+  <label class="radio-label-padding">{{item.label}}:</label>
+  <mat-radio-group [formControlName]="item.name">
+    <mat-radio-button *ngFor="let opt of field.options" [value]="opt.data">{{opt.label}}</mat-radio-button>
+  </mat-radio-group>
+</div>

@@ -1,0 +1,9 @@
+<mat-form-field [formGroup]="form">
+  <input matInput [matDatepicker]="picker" [formControlName]="item.name" [placeholder]="item.label">
+  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker #picker></mat-datepicker>
+  <mat-hint></mat-hint>
+  <ng-container *ngFor="let validation of item.validations;" ngProjectAs="mat-error">
+    <mat-error *ngIf="group.get(item.name).hasError(validation.name)">{{validation.message}}</mat-error>
+  </ng-container>
+</mat-form-field>

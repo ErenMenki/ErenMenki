@@ -48,6 +48,15 @@ import { AccordionAnchorDirective } from './core/nav-accordion/accordionanchor.d
 import { AccordionDirective } from './core/nav-accordion/accordion.directive';
 import { ComponentsModule } from './components/components.module';
 import { DenemeComponent } from './deneme/deneme.component';
+import { CheckboxComponent } from './components/checkbox/checkbox.component';
+import { DropdownComponent } from './components/dropdown/dropdown.component';
+import { RadioComponent } from './components/radio/radio.component';
+import { FileComponent } from './components/file/file.component';
+import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
+import { DatepickerComponent } from './components/datepicker/datepicker.component';
+import { DatecomboComponent } from './components/datecombo/datecombo.component';
+import { ButtonComponent } from './components/button/button.component';
+import { InputComponent } from './components/input/input.component';
 
 // Translation Script
 export function createTranslateLoader(http: HttpClient) {
@@ -106,6 +115,17 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
     }
+  ],
+  entryComponents: [
+    CheckboxComponent,
+    DropdownComponent,
+    RadioComponent,
+    FileComponent,
+    AutocompleteComponent,
+    DatepickerComponent,
+    DatecomboComponent,
+    ButtonComponent,
+    InputComponent,
   ],
   exports: [
     ComponentsModule,

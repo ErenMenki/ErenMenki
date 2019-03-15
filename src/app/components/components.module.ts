@@ -11,14 +11,39 @@ import {
   MatFormFieldModule,
   MatInputModule,
   MatPaginatorModule,
-  MatSelectModule
+  MatSelectModule,
+  MatCheckboxModule,
+  MatRadioModule,
+  MatDatepickerModule
 } from '@angular/material';
+import { CheckboxComponent } from './checkbox/checkbox.component';
+import { DropdownComponent } from './dropdown/dropdown.component';
+import { RadioComponent } from './radio/radio.component';
+import { FileComponent } from './file/file.component';
+import { AutocompleteComponent } from './autocomplete/autocomplete.component';
+import { DatepickerComponent } from './datepicker/datepicker.component';
+import { DatecomboComponent } from './datecombo/datecombo.component';
+import { ButtonComponent } from './button/button.component';
+import { InputComponent } from './input/input.component';
+import { FormComponent } from './form/form.component';
+import { FormItemDirective } from './form/form-item.directive';
 
 
 @NgModule({
   declarations: [
     DatagridComponent,
-    FormGeneratorComponent
+    FormGeneratorComponent,
+    CheckboxComponent,
+    DropdownComponent,
+    RadioComponent,
+    FileComponent,
+    AutocompleteComponent,
+    DatepickerComponent,
+    DatecomboComponent,
+    ButtonComponent,
+    InputComponent,
+    FormComponent,
+    FormItemDirective
   ],
   imports: [
     CommonModule,
@@ -28,11 +53,24 @@ import {
     MatFormFieldModule,
     MatInputModule,
     MatPaginatorModule,
-    MatSelectModule
+    MatSelectModule,
+    MatCheckboxModule,
+    MatRadioModule,
+    MatDatepickerModule,
   ],
   exports: [
     DatagridComponent,
-    FormGeneratorComponent
+    FormGeneratorComponent,
+    CheckboxComponent,
+    DropdownComponent,
+    RadioComponent,
+    FileComponent,
+    AutocompleteComponent,
+    DatepickerComponent,
+    DatecomboComponent,
+    ButtonComponent,
+    InputComponent,
+    FormComponent
   ],
 })
 export class ComponentsModule { }

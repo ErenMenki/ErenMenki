@@ -1,31 +1,31 @@
 import { Component, Input, OnChanges, Output, EventEmitter, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 
-export class DataGridColumn {
+export interface DataGridColumn {
   dataField: string;
   headerText?: string;
-  align?: string = 'center';
+  align?: string ;
   width?: number;
   widthPercent?: number;
-  dataType?: string = 'text';
+  dataType?: string;
   labelFunction?: any;
   currencyField?: string;
   footerData?: any;
-  editable?: boolean = false;
-  sticky?: boolean = false;
+  editable?: boolean;
+  sticky?: boolean;
 }
 export enum SortType {
   Ascending = 'asc',
   Descending = 'desc'
 }
-export class SortObject {
-  column_name: string = '';
-  sort_type: SortType = SortType.Ascending;
+export interface SortObject {
+  column_name: string;
+  sort_type: SortType;
 }
-export class DataGridRefreshEvent {
-  pageNo?: number = 1;
-  sort?: SortObject = { column_name: 'id', sort_type: SortType.Ascending };
-  filters?: { [prop: string]: any[] } = {};
+export interface DataGridRefreshEvent {
+  pageNo?: number;
+  sort?: SortObject;
+  filters?: { [prop: string]: any[] };
 }
 
 @Component({
@@ -50,10 +50,20 @@ export class DatagridComponent implements OnChanges {
   ngOnChanges() {
     console.log(this.columns);
     console.log(this.dataSource);
-    this.matDataSource  = new MatTableDataSource(this.dataSource);
+    this.matDataSource = new MatTableDataSource(this.dataSource);
     this.matDataSource.paginator = this.paginator;
     this.matDataSource.sort = this.sort;
     this.cols = this.columns.map(c => c.dataField);
+  }
+
+  onDataChange($event) {
+    const event: DataGridRefreshEvent = {
+      pageNo: 1,
+      sort: { column_name: 'id', sort_type: SortType.Ascending },
+      filters: {}
+    };
+
+    this.refresh.emit(event);
   }
 }
 

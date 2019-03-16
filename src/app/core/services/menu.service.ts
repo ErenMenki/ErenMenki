@@ -4,12 +4,6 @@ export interface BadgeItem {
   type: string;
   value: string;
 }
-
-export interface ChildrenItems {
-  state: string;
-  name: string;
-  type?: string;
-}
 export enum MenuType {
   title,
   link,
@@ -17,18 +11,18 @@ export enum MenuType {
   divider
 }
 export interface Menu {
+  type: MenuType;
   state?: string;
   name?: string;
-  type: MenuType;
   icon?: string;
   badge?: BadgeItem[];
-  children?: ChildrenItems[];
+  children?: Menu[];
 }
 
 const MENUITEMS = [
   {
     type: MenuType.title,
-    name: 'Satinalma'
+    name: 'purchasing'
   },
   {
     state: '/purchasing/materials',
@@ -49,9 +43,9 @@ const MENUITEMS = [
     type: MenuType.sub,
     icon: 'verified_user',
     children: [
-      { state: 'purchaseRequest', name: 'Satinalma Talep' },
-      { state: 'purchaseRequestReport', name: 'Talep Raporu' },
-      { state: 'purchaseRequestDetailReport', name: 'Detayli Talep Raporu' },
+      { state: 'purchaseRequest', name: 'Satinalma Talep', type: MenuType.link },
+      { state: 'purchaseRequestReport', name: 'Talep Raporu', type: MenuType.link },
+      { state: 'purchaseRequestDetailReport', name: 'Detayli Talep Raporu', type: MenuType.link },
     ]
   },
   {
@@ -73,9 +67,9 @@ const MENUITEMS = [
     type: MenuType.sub,
     icon: 'developer_board',
     children: [
-      { state: 'purchaseRequest', name: 'Satinalma Talep' },
-      { state: 'purchaseRequestReport', name: 'Talep Raporu' },
-      { state: 'purchaseRequestDetailReport', name: 'Detayli Talep Raporu' },
+      { state: 'purchaseRequest', name: 'Satinalma Talep', type: MenuType.link },
+      { state: 'purchaseRequestReport', name: 'Talep Raporu', type: MenuType.link },
+      { state: 'purchaseRequestDetailReport', name: 'Detayli Talep Raporu', type: MenuType.link },
     ]
   },
 ];

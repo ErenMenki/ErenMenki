@@ -14,7 +14,10 @@ import {
   MatSelectModule,
   MatCheckboxModule,
   MatRadioModule,
-  MatDatepickerModule
+  MatDatepickerModule,
+  MatNativeDateModule,
+  MatAutocompleteModule,
+  MatIconModule
 } from '@angular/material';
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { DropdownComponent } from './dropdown/dropdown.component';
@@ -27,6 +30,7 @@ import { ButtonComponent } from './button/button.component';
 import { InputComponent } from './input/input.component';
 import { FormComponent } from './form/form.component';
 import { FormItemDirective } from './form/form-item.directive';
+import { ButtonbarComponent } from './buttonbar/buttonbar.component';
 
 
 @NgModule({
@@ -43,7 +47,8 @@ import { FormItemDirective } from './form/form-item.directive';
     ButtonComponent,
     InputComponent,
     FormComponent,
-    FormItemDirective
+    FormItemDirective,
+    ButtonbarComponent
   ],
   imports: [
     CommonModule,
@@ -57,6 +62,20 @@ import { FormItemDirective } from './form/form-item.directive';
     MatCheckboxModule,
     MatRadioModule,
     MatDatepickerModule,
+    MatNativeDateModule,
+    MatAutocompleteModule,
+    MatIconModule,
+  ],
+  entryComponents:[
+    CheckboxComponent,
+    DropdownComponent,
+    RadioComponent,
+    FileComponent,
+    AutocompleteComponent,
+    DatepickerComponent,
+    DatecomboComponent,
+    ButtonComponent,
+    InputComponent,
   ],
   exports: [
     DatagridComponent,
@@ -70,7 +89,8 @@ import { FormItemDirective } from './form/form-item.directive';
     DatecomboComponent,
     ButtonComponent,
     InputComponent,
-    FormComponent
+    FormComponent,
+    ButtonbarComponent
   ],
 })
 export class ComponentsModule { }

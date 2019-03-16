@@ -10,27 +10,15 @@ export const AccountRoutes: Routes = [
     children: [
       {
         path: 'forgot',
-        component: ForgotComponent,
-        data: {
-          heading: 'Forgot password',
-          css: ''
-        }
+        component: ForgotComponent
       },
       {
         path: 'lockscreen',
-        component: LockscreenComponent,
-        data: {
-          heading: 'Lockscreen',
-          css: ''
-        }
+        component: LockscreenComponent
       },
       {
         path: 'login',
-        component: LoginComponent,
-        data: {
-          heading: 'Login',
-          css: ''
-        }
+        component: LoginComponent
       }
     ]
   }

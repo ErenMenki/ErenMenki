@@ -1,0 +1,10 @@
+<div class="buttonBarContainer">
+    <button mat-raised-button *ngFor="let item of buttons" 
+        isIconButton="true" isRoundButton="true"
+        [name]="item.name"
+        (click)="buttonItemClick($event)">
+      <mat-icon *ngIf="item.icon">{{item.icon}}</mat-icon>
+      {{item.label}}
+    </button>
+  </div>
+  

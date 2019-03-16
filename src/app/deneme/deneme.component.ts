@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DataGridRefreshEvent, DataGridColumn, SortObject, SortType } from 'src/app/components/datagrid/datagrid.component';
 import { FormItem, FormTypes } from '../components/form/form.component';
 import { Validators } from '@angular/forms';
+import { ButtonBarItem, ButtonColors } from '../components/buttonbar/buttonbar.component';
 // import { FormItem, TextboxFormItem, DropdownFormItem } from '../components/form-generator/form-item';
 // import { FormEvent } from '../components/form-generator/form-generator.component';
 
@@ -34,18 +35,64 @@ export class DenemeComponent implements OnInit {
   formItems: FormItem[];
   // formItems: FormItem<any>[];
   payLoad = '';
+  butonBilgileri = '';
+
+  buttonBarItems: ButtonBarItem[];
 
   constructor() { }
 
   ngOnInit() {
     this.createDGColumns();
     this.createForm();
+    this.createButtonBar();
   }
 
   // onSubmit(event: FormEvent) {
   //   this.payLoad = JSON.stringify(event.data);
   // }
+  createButtonBar() {
+    this.buttonBarItems = [
+      {
+        label: 'Button 1',
+        name: 'button1',
+        icon: 'person',
+        onClick: 'buton1clickHandler'
+      },
+      {
+        label: 'Button 2',
+        name: 'button2',
+        color: ButtonColors.Primary,
+        onClick: 'gitVeritabaninaBaglan'
+      },
+      {
+        label: 'Button 3',
+        name: 'button3',
+        color: ButtonColors.Accent
+      },
+      {
+        label: 'Button 4',
+        name: 'button4',
+        color: ButtonColors.Disabled
+      },
+    ];
+  }
 
+  gitVeritabaninaBaglan(item: ButtonBarItem) {
+    this.butonBilgileri += item.label + ' isimli butona tiklandi haa ona gore';
+  }
+
+  buton1clickHandler(item: ButtonBarItem){
+    this.butonBilgileri += item.label + ' isimli butona tiklandi';
+  }
+
+  butonclickHandler(item: ButtonBarItem) {
+    if(this[item.onClick]){
+      this[item.onClick](item);
+    }
+    // console.log('butona tiklandi');
+    // console.log($event);
+    // this.butonBilgileri += $event + ' idli butona tiklandi';
+  }
 
   createForm() {
     this.formItems = [
@@ -84,6 +131,73 @@ export class DenemeComponent implements OnInit {
             message: 'duzgun email girin '
           }
         ]
+      },
+      {
+        type: FormTypes.Password,
+        label: 'Sifreniz',
+        name: 'password',
+        validations: [
+          {
+            name: 'required',
+            validator: Validators.required,
+            message: 'Sifrenizi girin lo'
+          }
+        ]
+      },
+      {
+        type: FormTypes.DatePicker,
+        label: 'Tarih',
+        name: 'date_created'
+      },
+      {
+        type: FormTypes.DropDown,
+        label: 'zort zort',
+        name: 'dropzort',
+        options: [
+          { data: 1, label: 'asdad1' },
+          { data: 2, label: 'asdad2' },
+          { data: 3, label: 'asdad3' },
+          { data: 4, label: 'asdad4' },
+        ]
+      },
+      {
+        type: FormTypes.AutoComplete,
+        label: 'zort zort2',
+        name: 'dropzort2',
+        options: [
+          { data: 1, label: 'sari' },
+          { data: 2, label: 'mavi' },
+          { data: 3, label: 'kirmizi' },
+          { data: 4, label: 'yesil' },
+        ]
+      },
+      {
+        type: FormTypes.Radio,
+        label: 'Cinsiyet',
+        name: 'gender',
+        options: [
+          { data: 1, label: 'male' },
+          { data: 2, label: 'female' },
+        ]
+      },
+      {
+        type: FormTypes.Radio,
+        label: 'Medeni Hal',
+        name: 'zoafdsad',
+        options: [
+          { data: 1, label: 'evli' },
+          { data: 2, label: 'bekar' },
+        ]
+      },
+      {
+        type: FormTypes.CheckBox,
+        label: 'Kabul ediyor musunuz ? ',
+        name: 'zoafdsasdsd',
+      },
+      {
+        type: FormTypes.Button,
+        name: 'button1',
+        label: 'Button1'
       }
 
 

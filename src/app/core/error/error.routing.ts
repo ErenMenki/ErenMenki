@@ -9,11 +9,7 @@ export const ErrorRoutes: Routes = [
     children: [
       {
         path: '404',
-        component: NotFoundComponent,
-        data: {
-          heading: '404',
-          css: ''
-        }
+        component: NotFoundComponent
       },
       {
         path: 'error',

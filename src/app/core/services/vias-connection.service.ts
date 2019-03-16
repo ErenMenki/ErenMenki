@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 // Globals
 import { GlobalsService } from './globals.service';
 
-export class ViasResponse {
+export interface ViasResponse {
   sid: string;
   pid: number;
   aid: number;

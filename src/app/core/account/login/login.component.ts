@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
   }
   // ?data={%22username%22:%22hob%22,%22password%22:%22iZkWyZleGNlUsRmeX1GdXJ1aKVVVB1TP%22,%22firmId%22:2}
   login(): void {
-    console.log(this.form.value);
+    // console.log(this.form.value);
     if (this.form.value.username.length > 2 && this.form.value.password.length > 2) {
       this.viasService.send(0, 0, {
         username: this.form.value.username,
@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit {
     if (r.data) {
       /// login bilgileri
       if (r.data.hasOwnProperty('login_bilgileri')) {
-        var login = r.data['login_bilgileri'];
+        const login = r.data['login_bilgileri'];
         // global degiskenleri set et
         this.globals.userName = login.name + ' ' + login.surname;
         this.globals.userId = login.id;

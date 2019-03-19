@@ -1,0 +1,17 @@
+<div class="fullScreen">
+  <vias-datagrid
+    [dataSource]="dataSource"
+    [columns]="columns"
+    [currentPage]="pageno"
+    [totalPages]="totalPages"
+    (refresh)="datagridRefreshHandler($event)"
+  ></vias-datagrid>
+  <vias-buttonbar
+    [buttons]="buttonBarItems"
+    (itemClick)="butonclickHandler($event)"
+  ></vias-buttonbar>
+  <vias-form 
+    [formItems]="formItems"
+    (submit)="formSubmitHandler($event)"
+  ></vias-form>
+</div>

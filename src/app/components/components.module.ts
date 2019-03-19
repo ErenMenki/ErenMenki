@@ -3,8 +3,6 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule , FormsModule } from '@angular/forms';
 
 
-import { DatagridComponent } from './datagrid/datagrid.component';
-import { FormGeneratorComponent } from './form-generator/form-generator.component';
 
 import {
   MatTableModule,
@@ -31,12 +29,13 @@ import { InputComponent } from './input/input.component';
 import { FormComponent } from './form/form.component';
 import { FormItemDirective } from './form/form-item.directive';
 import { ButtonbarComponent } from './buttonbar/buttonbar.component';
+import { DatagridComponent } from './datagrid/datagrid.component';
+import { PageComponent } from './page/page.component';
 
 
 @NgModule({
   declarations: [
     DatagridComponent,
-    FormGeneratorComponent,
     CheckboxComponent,
     DropdownComponent,
     RadioComponent,
@@ -48,7 +47,8 @@ import { ButtonbarComponent } from './buttonbar/buttonbar.component';
     InputComponent,
     FormComponent,
     FormItemDirective,
-    ButtonbarComponent
+    ButtonbarComponent,
+    PageComponent
   ],
   imports: [
     CommonModule,
@@ -79,7 +79,6 @@ import { ButtonbarComponent } from './buttonbar/buttonbar.component';
   ],
   exports: [
     DatagridComponent,
-    FormGeneratorComponent,
     CheckboxComponent,
     DropdownComponent,
     RadioComponent,
@@ -90,7 +89,8 @@ import { ButtonbarComponent } from './buttonbar/buttonbar.component';
     ButtonComponent,
     InputComponent,
     FormComponent,
-    ButtonbarComponent
+    ButtonbarComponent,
+    PageComponent
   ],
 })
 export class ComponentsModule { }

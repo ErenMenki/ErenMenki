@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output } from '@angular/core';
-import { FormItem, FormTypes } from '../form/form.component';
+import { FormItem, FormTypes } from '../form/FormItem';
 import { FormGroup, } from '@angular/forms';
 
 @Component({

@@ -1,40 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-
-export enum FormTypes {
-  AutoComplete = 'autocomplete',
-  Button = 'button',
-  CheckBox = 'checkbox',
-  DataGrid = 'datagrid',
-  DatePicker = 'datepicker',
-  DateCombo = 'datepicker',
-  ComboBox = 'dropdown',
-  DropDown = 'dropdown',
-  File = 'file',
-  Input = 'text',
-  Text = 'text',
-  Email = 'email',
-  Number = 'number',
-  Password = 'password',
-  Radio = 'radio',
-}
-
-export interface FormValidator {
-  name: string;
-  validator: any;
-  message: string;
-}
-
-export interface FormItem {
-  type: FormTypes;
-  name: string;
-  label?: string;
-  value?: any;
-  required?: boolean;
-  options?: object[];
-  collections?: any;
-  validations?: FormValidator[];
-}
+import { FormItem } from './FormItem';
 
 @Component({
   selector: 'vias-form',
@@ -59,9 +25,6 @@ export class FormComponent implements OnInit {
   createControl() {
     const group = this.fb.group({});
     this.formItems.forEach(item => {
-      if (item.type === 'button') {
-        return;
-      }
       const control = this.fb.control(
         item.value,
         this.bindValidations(item.validations || [])

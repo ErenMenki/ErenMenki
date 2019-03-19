@@ -12,6 +12,7 @@
             "element",
             "vias",
             "kebab-case"
-        ]
+        ],
+        "no-inferrable-types": false
     }
 }

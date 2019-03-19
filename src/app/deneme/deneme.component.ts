@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataGridRefreshEvent, DataGridColumn, SortObject, SortType } from 'src/app/components/datagrid/datagrid.component';
-import { FormItem, FormTypes } from '../components/form/form.component';
+import { FormItem, FormTypes } from '../components/form/FormItem';
 import { Validators } from '@angular/forms';
 import { ButtonBarItem, ButtonColors } from '../components/buttonbar/buttonbar.component';
 // import { FormItem, TextboxFormItem, DropdownFormItem } from '../components/form-generator/form-item';

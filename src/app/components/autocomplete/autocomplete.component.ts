@@ -1,14 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormItem } from '../form/form.component';
+import { FormItem } from '../form/FormItem';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
-
-export interface State {
-  flag?: string;
-  name: string;
-  population: string;
-}
 
 @Component({
   selector: 'vias-autocomplete',

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { FormItem } from '../form/form.component';
+import { FormItem } from '../form/FormItem';
 
 @Component({
   selector: 'vias-datepicker',

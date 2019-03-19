@@ -7,6 +7,8 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { GlobalsService } from './core/services/globals.service';
 // vias service
 import { ViasConnectionService } from './core/services/vias-connection.service';
+// page meta loader service
+import { PageMetaService } from "./core/services/page-meta.service";
 
 // Angular Material
 import {
@@ -48,6 +50,7 @@ import { AccordionAnchorDirective } from './core/nav-accordion/accordionanchor.d
 import { AccordionDirective } from './core/nav-accordion/accordion.directive';
 import { ComponentsModule } from './components/components.module';
 import { DenemeComponent } from './deneme/deneme.component';
+import { Deneme2Component } from './deneme2/deneme2.component';
 
 // Translation Script
 export function createTranslateLoader(http: HttpClient) {
@@ -70,6 +73,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     AccordionLinkDirective,
     AccordionAnchorDirective,
     DenemeComponent,
+    Deneme2Component,
   ],
   imports: [
     BrowserModule,
@@ -102,6 +106,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   providers: [
     GlobalsService,
     ViasConnectionService,
+    PageMetaService,
     {
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG

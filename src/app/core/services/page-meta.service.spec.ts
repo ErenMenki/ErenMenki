@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { FormService } from './form.service';
+import { PageMetaService } from './page-meta.service';
 
-describe('FormService', () => {
+describe('PageMetaService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: FormService = TestBed.get(FormService);
+    const service: PageMetaService = TestBed.get(PageMetaService);
     expect(service).toBeTruthy();
   });
 });

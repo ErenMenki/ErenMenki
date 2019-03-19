@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FormItem } from './FormItem';
 
@@ -7,14 +7,15 @@ import { FormItem } from './FormItem';
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss']
 })
-export class FormComponent implements OnInit {
+export class FormComponent implements OnInit, OnChanges {
   @Input() formItems: FormItem[] = [];
   @Output() submit: EventEmitter<any> = new EventEmitter<any>();
   form: FormGroup;
 
   constructor(private fb: FormBuilder) { }
 
-  ngOnInit() {
+  ngOnInit() { }
+  ngOnChanges() {
     this.form = this.createControl();
   }
 

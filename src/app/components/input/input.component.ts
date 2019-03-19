@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
+import { Component, OnInit, Input, Output, OnChanges } from '@angular/core';
 import { FormItem, FormTypes } from '../form/FormItem';
 import { FormGroup, } from '@angular/forms';
 
@@ -7,13 +7,13 @@ import { FormGroup, } from '@angular/forms';
   templateUrl: './input.component.html',
   styleUrls: ['./input.component.scss']
 })
-export class InputComponent implements OnInit {
+export class InputComponent implements OnInit, OnChanges {
   @Input() item: FormItem;
   @Input() form: FormGroup;
   inputType: string;
-  constructor() {
-  }
-  ngOnInit() {
+  constructor() { }
+  ngOnInit() { }
+  ngOnChanges() {
     switch (this.item.type) {
       case FormTypes.Number:
         this.inputType = 'number';

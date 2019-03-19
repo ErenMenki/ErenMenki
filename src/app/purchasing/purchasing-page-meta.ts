@@ -53,8 +53,8 @@ export class MaterialsPageMeta implements PageMeta {
         },
     ];
 
-    FormItems = [
-        new TextboxFormItem({
+    formItems = [
+        {
             type: FormTypes.Number,
             label: 'Malzeme Kodu',
             name: 'code',
@@ -70,8 +70,8 @@ export class MaterialsPageMeta implements PageMeta {
                     message: 'Sadece nümerik değer girebilirsiniz'
                 }
             ]
-        }),
-        new TextboxFormItem({
+        },
+        {
             type: FormTypes.Text,
             label: 'Malzeme Tanımı',
             name: 'material_name',
@@ -82,11 +82,12 @@ export class MaterialsPageMeta implements PageMeta {
                     message: 'Malzeme Kodu Gerekli Alandır'
                 }
             ]
-        }),
-        new AutoCompleteFormItem({
+        },
+        {
+            type: FormTypes.AutoComplete,
             label: 'Malzeme Grubu',
             name: 'material_group',
-            optionInitFunction: 'getMaterialGroups',
+            // optionInitFunction: 'getMaterialGroups',
             validations: [
                 {
                     name: 'required',
@@ -94,6 +95,6 @@ export class MaterialsPageMeta implements PageMeta {
                     message: 'Malzeme Kodu Gerekli Alandır'
                 }
             ],
-        })
+        }
     ];
 }

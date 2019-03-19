@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { FormItem } from '../form/FormItem';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -9,13 +9,18 @@ import { startWith, map } from 'rxjs/operators';
   templateUrl: './autocomplete.component.html',
   styleUrls: ['./autocomplete.component.scss']
 })
-export class AutocompleteComponent implements OnInit {
+export class AutocompleteComponent implements OnInit, OnChanges {
   @Input() item: FormItem;
   @Input() form: FormGroup;
   filteredOptions: Observable<object[]>;
   myControl: FormControl;
   constructor() { }
   ngOnInit() {
+    if (!this.item.options) {
+      this.item.options = [{ label: '', data: '' }];
+    }
+  }
+  ngOnChanges(changes) {
     this.myControl = this.form.get(this.item.name) as FormControl;
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),

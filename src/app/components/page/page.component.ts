@@ -31,19 +31,23 @@ export class PageComponent implements OnInit, OnDestroy {
   filtersObj: object = {};
 
   // Buttonbar
-  buttonBarItems: ButtonBarItem[];
+  buttonBarItems: ButtonBarItem[] = [];
 
 
   // Form
-  formItems: FormItem[];
+  formItems: FormItem[] = [];
 
   constructor(protected globals: GlobalsService, protected viasService: ViasConnectionService) { }
 
   ngOnInit() {
     if (this.pageMeta.length > 0 && this.pageMeta.indexOf('/') >= 0) {
       const pms: PageMetaService = new PageMetaService();
-      const pageMeta: PageMeta = pms.getPage(this.pageMeta);
-      this.generatePageFromMeta(pageMeta);
+      pms.getPage(this.pageMeta).then(
+        metaData => {
+          console.log(metaData);
+          this.generatePageFromMeta(metaData);
+        }
+      );
     }
   }
 
@@ -54,7 +58,7 @@ export class PageComponent implements OnInit, OnDestroy {
 
   generatePageFromMeta(pageMeta: PageMeta) {
     this.columns = pageMeta.dataGridColumns;
-    this.formItems = pageMeta.FormItems;
+    this.formItems = pageMeta.formItems;
   }
 
   /**
@@ -73,6 +77,11 @@ export class PageComponent implements OnInit, OnDestroy {
     if (this[$event.onClick]) {
       this[$event.onClick]($event);
     }
+  }
+
+  formItemChangeOption(itemName: string, data: object[]) {
+    const index = this.formItems.findIndex(e => e['name'] === itemName);
+    this.formItems[index].options = data;
   }
 
   /**

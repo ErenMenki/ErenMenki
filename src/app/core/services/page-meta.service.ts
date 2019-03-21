@@ -2,7 +2,7 @@ import { Injectable, Injector } from '@angular/core';
 import { DataGridColumn } from 'src/app/components/datagrid/datagrid.component';
 import { FormItem } from 'src/app/components/form/FormItem';
 
-import * as purchasing from 'src/app/purchasing/purchasing-page-meta';
+// import * as purchasing from 'src/app/purchasing/purchasing-page-meta';
 
 export interface PageMeta {
   pid: number;
@@ -30,33 +30,34 @@ export interface PageMeta {
 
 @Injectable({
   providedIn: 'root',
-  useFactory: () => {
-     return new purchasing.MaterialsPageMeta();
-  }
+  // useFactory: () => {
+  //    return new purchasing.MaterialsPageMeta();
+  // }
 })
 export class PageMetaService {
 
   constructor() {
   }
-  
-    // getInstance(name: string, ...args: any[]) {
-    //     var instance = Object.create(this.context[name].prototype);
-    //     instance.constructor.apply(instance, args);
-    //     return instance;
-    // }
+
+  // getInstance(name: string, ...args: any[]) {
+  //     var instance = Object.create(this.context[name].prototype);
+  //     instance.constructor.apply(instance, args);
+  //     return instance;
+  // }
 
   getPage(page: string): Promise<PageMeta> {
     const pagePieces = page.split('/');
-    const fileLoc: string = 'src/app/' + pagePieces[0] + '/' + pagePieces[0] + '-page-meta';//#MaterialsPageMeta';
+    const fileLoc: string = 'src/app/' + pagePieces[0] + '/' + pagePieces[0] + '-page-meta';
+    // #MaterialsPageMeta';
     return new Promise((resolve, reject) => {
       console.log(fileLoc);
       import('src/app/purchasing/purchasing-page-meta').then(
         res => {
           console.log(res);
-          resolve(new res.MaterialsPageMeta() );
+          resolve(new res.MaterialsPageMeta());
         },
         err => {
-          console.log("hahahahahaha");
+          console.log('hahahahahaha');
           console.log(err);
           reject(err);
         }

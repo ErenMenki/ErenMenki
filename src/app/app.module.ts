@@ -49,8 +49,6 @@ import { AccordionLinkDirective } from './core/nav-accordion/accordionlink.direc
 import { AccordionAnchorDirective } from './core/nav-accordion/accordionanchor.directive';
 import { AccordionDirective } from './core/nav-accordion/accordion.directive';
 import { ComponentsModule } from './components/components.module';
-import { DenemeComponent } from './deneme/deneme.component';
-import { Deneme2Component } from './deneme2/deneme2.component';
 
 // Translation Script
 export function createTranslateLoader(http: HttpClient) {
@@ -72,8 +70,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     AccordionDirective,
     AccordionLinkDirective,
     AccordionAnchorDirective,
-    DenemeComponent,
-    Deneme2Component,
   ],
   imports: [
     BrowserModule,

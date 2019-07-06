@@ -5,13 +5,21 @@
     [currentPage]="pageno"
     [totalPages]="totalPages"
     (refresh)="datagridRefreshHandler($event)"
+    (rowClick)="datagridClickHandler($event)"
+    (addClick)="datagridAddBtnClickHandler($event)"
+    (editClick)="datagridEditBtnClickHandler($event)"
+    (deleteClick)="datagridDeleteBtnClickHandler($event)"
+    *ngIf="hasDatagrid"
+    [dgButtons]="dgButtons"
   ></vias-datagrid>
   <vias-buttonbar
     [buttons]="buttonBarItems"
     (itemClick)="butonclickHandler($event)"
+    *ngIf="hasButtonbar"
   ></vias-buttonbar>
   <vias-form 
     [formItems]="formItems"
     (submit)="formSubmitHandler($event)"
+    *ngIf="hasEditForm"
   ></vias-form>
 </div>

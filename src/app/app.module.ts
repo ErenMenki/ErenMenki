@@ -8,7 +8,7 @@ import { GlobalsService } from './core/services/globals.service';
 // vias service
 import { ViasConnectionService } from './core/services/vias-connection.service';
 // page meta loader service
-import { PageMetaService } from "./core/services/page-meta.service";
+import { PageMetaService } from './core/services/page-meta.service';
 
 // Angular Material
 import {

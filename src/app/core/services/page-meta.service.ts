@@ -4,7 +4,23 @@ import { FormItem } from 'src/app/components/form/FormItem';
 
 // import * as purchasing from 'src/app/purchasing/purchasing-page-meta';
 
+export enum ResponseFieldDataSourceType {
+  datagridDataSource,
+  datagridFilterDataSource,
+  formDataSource,
+  formFieldDataSource,
+}
+
+export interface ResponseField {
+  fieldName: string;
+  responseFieldType: ResponseFieldDataSourceType;
+  componentName?: string;
+}
+
 export interface PageMeta {
+  listPageName?: string;
+  editPageName?: string;
+
   pid: number;
   // bu sayfadan baska sayfaya secim yapilacak mi?
   hasSelectButton: boolean;
@@ -22,8 +38,18 @@ export interface PageMeta {
   editChildAid?: number;
   deleteChildAid?: number;
 
+  hasButtonBarInList?: boolean;
+  hasButtonBarInEdit?: boolean;
 
   dataGridColumns?: DataGridColumn[];
+
+  // list icin alanlar
+  pageNoField?: string;
+  pageTotalsField?: string;
+  responseFields?: ResponseField[];
+  datagridHasAddBtn?: boolean;
+  datagridHasEditBtn?: boolean;
+  datagridHasDeleteBtn?: boolean;
 
   formItems?: FormItem[];
 }
@@ -45,16 +71,12 @@ export class PageMetaService {
   //     return instance;
   // }
 
-  getPage(page: string): Promise<PageMeta> {
-    const pagePieces = page.split('/');
-    const fileLoc: string = 'src/app/' + pagePieces[0] + '/' + pagePieces[0] + '-page-meta';
-    // #MaterialsPageMeta';
+  getPage(moduleName: string, pageName: string): Promise<PageMeta> {
     return new Promise((resolve, reject) => {
-      console.log(fileLoc);
-      import('src/app/purchasing/purchasing-page-meta').then(
+      import(`src/app/${moduleName}/${moduleName}-page-meta`).then(
         res => {
-          console.log(res);
-          resolve(new res.MaterialsPageMeta());
+          // console.log(res);
+          resolve(new res.PageMetaDefs[pageName]);
         },
         err => {
           console.log('hahahahahaha');
@@ -63,13 +85,6 @@ export class PageMetaService {
         }
       );
     });
-    // switch (pagePieces[0]) {
-    //   case 'purchasing':
-    //     if (pagePieces[1] === 'material') {
-    //       return new purchasing.MaterialsPageMeta();
-    //     }
-    //     break;
-    // }
     return null;
   }
 }

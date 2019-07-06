@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, OnChanges } from '@angular/core';
-import { FormItem, FormTypes } from '../form/FormItem';
+import { FormItem } from '../form/FormItem';
+import { FieldTypes } from "../../core/FieldTypes";
 import { FormGroup, } from '@angular/forms';
 
 @Component({
@@ -15,17 +16,17 @@ export class InputComponent implements OnInit, OnChanges {
   ngOnInit() { }
   ngOnChanges() {
     switch (this.item.type) {
-      case FormTypes.Number:
+      case FieldTypes.Number:
         this.inputType = 'number';
         break;
-      case FormTypes.Email:
+      case FieldTypes.Email:
         this.inputType = 'email';
         break;
-      case FormTypes.Password:
+      case FieldTypes.Password:
         this.inputType = 'password';
         break;
-      case FormTypes.Input:
-      case FormTypes.Text:
+      case FieldTypes.Input:
+      case FieldTypes.Text:
       default:
         this.inputType = 'text';
         break;

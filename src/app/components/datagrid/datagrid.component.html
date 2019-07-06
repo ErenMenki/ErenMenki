@@ -1,71 +1,7 @@
-<mat-table #table [dataSource]="matDataSource" class="mat-elevation-z8">
-  <ng-container *ngFor="let col of columns" [matColumnDef]="col.dataField" 
-    [sticky]="col.sticky == true">
-    <mat-header-cell *matHeaderCellDef mat-sort-header> {{col.headerText}} </mat-header-cell>
-    <mat-cell *matCellDef="let data">
-      <span *ngIf="!col.editable">{{data[col.dataField]}}</span>
-      <mat-form-field floatLabel="never" *ngIf="col.editable">
-        <input matInput placeholder="{{col.headerText}}" [value]="data[col.dataField]"
-          [(ngModel)]="data[col.dataField]">
-      </mat-form-field>
-    </mat-cell>
-    <!-- <mat-footer-cell *ngIf="col.footerData != ''">{{col.footerData}}</mat-footer-cell> -->
-  </ng-container>
-  <mat-header-row *matHeaderRowDef="cols"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: cols;"></mat-row>
-    <!-- <mat-footer-row *matFooterRowDef="cols"></mat-footer-row> -->
-  </mat-table>
-  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-<div class="mat-paginator-outer-container">
-  <div class="mat-paginator-container">
-    <div class="mat-paginator-page-size ng-star-inserted">
-
-    </div>
-    <div class="mat-paginator-range-actions">
-      <div class="mat-paginator-range-label">1 - 5 of 10</div>
-      <button class="mat-paginator-navigation-first mat-icon-button ng-star-inserted" mat-icon-button="" type="button"
-        ng-reflect-disabled="true" aria-describedby="cdk-describedby-message-2" cdk-describedby-host=""
-        ng-reflect-position="above" ng-reflect-message="First page" aria-label="First page" disabled=""
-        style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"><span
-          class="mat-button-wrapper"><svg class="mat-paginator-icon" focusable="false" viewBox="0 0 24 24">
-            <path d="M18.41 16.59L13.82 12l4.59-4.59L17 6l-6 6 6 6zM6 6h2v12H6z"></path>
-          </svg></span>
-        <div class="mat-button-ripple mat-ripple mat-button-ripple-round" matripple="" ng-reflect-centered="true"
-          ng-reflect-disabled="true" ng-reflect-trigger="[object HTMLButtonElement]"></div>
-        <div class="mat-button-focus-overlay"></div>
-      </button>
-      <button class="mat-paginator-navigation-previous mat-icon-button" mat-icon-button="" type="button"
-        ng-reflect-disabled="true" aria-describedby="cdk-describedby-message-0" cdk-describedby-host=""
-        ng-reflect-position="above" ng-reflect-message="Previous page" aria-label="Previous page" disabled=""
-        style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"><span
-          class="mat-button-wrapper"><svg class="mat-paginator-icon" focusable="false" viewBox="0 0 24 24">
-            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path>
-          </svg></span>
-        <div class="mat-button-ripple mat-ripple mat-button-ripple-round" matripple="" ng-reflect-centered="true"
-          ng-reflect-disabled="true" ng-reflect-trigger="[object HTMLButtonElement]"></div>
-        <div class="mat-button-focus-overlay"></div>
-      </button><button class="mat-paginator-navigation-next mat-icon-button" mat-icon-button="" type="button"
-        ng-reflect-disabled="false" aria-describedby="cdk-describedby-message-1" cdk-describedby-host=""
-        ng-reflect-position="above" ng-reflect-message="Next page" aria-label="Next page"
-        style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"><span
-          class="mat-button-wrapper"><svg class="mat-paginator-icon" focusable="false" viewBox="0 0 24 24">
-            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
-          </svg></span>
-        <div class="mat-button-ripple mat-ripple mat-button-ripple-round" matripple="" ng-reflect-centered="true"
-          ng-reflect-disabled="false" ng-reflect-trigger="[object HTMLButtonElement]"></div>
-        <div class="mat-button-focus-overlay"></div>
-      </button>
-      <button class="mat-paginator-navigation-last mat-icon-button ng-star-inserted" mat-icon-button="" type="button"
-        ng-reflect-disabled="false" aria-describedby="cdk-describedby-message-3" cdk-describedby-host=""
-        ng-reflect-position="above" ng-reflect-message="Last page" aria-label="Last page"
-        style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"><span
-          class="mat-button-wrapper"><svg class="mat-paginator-icon" focusable="false" viewBox="0 0 24 24">
-            <path d="M5.59 7.41L10.18 12l-4.59 4.59L7 18l6-6-6-6zM16 6h2v12h-2z"></path>
-          </svg></span>
-        <div class="mat-button-ripple mat-ripple mat-button-ripple-round" matripple="" ng-reflect-centered="true"
-          ng-reflect-disabled="false" ng-reflect-trigger="[object HTMLButtonElement]"></div>
-        <div class="mat-button-focus-overlay"></div>
-      </button>
-    </div>
-  </div>
-</div>
+<ag-grid-angular 
+    style="width: 100%; height: 100%;" 
+    class="ag-theme-balham"
+    [rowData]="dataSource" 
+    [columnDefs]="columnDefs"
+    >
+</ag-grid-angular>

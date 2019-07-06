@@ -1,5 +1,6 @@
 import { Directive, ComponentFactoryResolver, ViewContainerRef, OnInit, Input } from '@angular/core';
-import { FormTypes, FormItem } from "./FormItem";
+import { FormItem } from "./FormItem";
+import { FieldTypes } from "../../core/FieldTypes";
 import { AutocompleteComponent } from '../autocomplete/autocomplete.component';
 import { ButtonComponent } from '../button/button.component';
 import { CheckboxComponent } from '../checkbox/checkbox.component';

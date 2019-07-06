@@ -25,7 +25,7 @@ const MENUITEMS = [
     name: 'purchasing'
   },
   {
-    state: '/purchasing/materials',
+    state: '/purchasing/material-list',
     name: 'Stok',
     type: MenuType.link,
     icon: 'table_chart',
@@ -43,10 +43,29 @@ const MENUITEMS = [
     type: MenuType.sub,
     icon: 'verified_user',
     children: [
-      { state: 'purchaseRequest', name: 'Satinalma Talep', type: MenuType.link },
+      { state: 'list-request', name: 'Satınalma Talep', type: MenuType.link },
       { state: 'purchaseRequestReport', name: 'Talep Raporu', type: MenuType.link },
       { state: 'purchaseRequestDetailReport', name: 'Detayli Talep Raporu', type: MenuType.link },
     ]
+  },
+  {
+    type: MenuType.divider
+  },
+  {
+    type: MenuType.title,
+    name: 'İnsan Kaynakları'
+  },
+  {
+    state: '/hr/list-duty-codes',
+    name: 'Hr Duty codes',
+    type: MenuType.link,
+    icon: 'bar_chart'
+  },
+  {
+    state: '/hr/list-incident-scenes',
+    name: 'Hr Incident Scenes',
+    type: MenuType.link,
+    icon: 'bar_chart'
   },
   {
     type: MenuType.divider

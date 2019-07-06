@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { GlobalsService } from 'src/app/core/services/globals.service';
 import { ViasConnectionService, ViasResponse } from 'src/app/core/services/vias-connection.service';
-import { DataGridRefreshEvent, DataGridColumn, SortObject, SortType } from 'src/app/components/datagrid/datagrid.component';
+import { DataGridRefreshEvent, DataGridColumn, SortObject, SortType } from 'src/app/components/datagrid2/datagrid2.component';
+import { FieldTypes } from 'src/app/core/FieldTypes';
 
 @Component({
   selector: 'vias-materials',
@@ -81,27 +82,27 @@ export class MaterialsComponent implements OnInit {
       {
         dataField: 'main_group_name',
         headerText: 'Ana Grubu',
-        dataType: 'date'
+        dataType: FieldTypes.Text
       },
       {
         dataField: 'group_name',
         headerText: 'Grubu',
-        dataType: 'date'
+        dataType: FieldTypes.Text
       },
       {
         dataField: 'purchase_unit_name',
         headerText: 'S.Alma Birimi',
-        dataType: 'date'
+        dataType: FieldTypes.Text
       },
       {
         dataField: 'min_stock',
         headerText: 'Min Stok',
-        dataType: 'date'
+        dataType: FieldTypes.Number
       },
       {
         dataField: 'max_stock',
         headerText: 'Maks Stok',
-        dataType: 'date'
+        dataType: FieldTypes.Number
       },
     ];
   }

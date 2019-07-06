@@ -27,7 +27,9 @@
               "src/assets"
             ],
             "styles": [
-              "src/assets/styles/scss/node.scss"
+              "src/assets/styles/scss/node.scss",
+              "node_modules/ag-grid-community/dist/styles/ag-grid.css",
+              "node_modules/ag-grid-community/dist/styles/ag-theme-balham.css"
             ],
             "scripts": [
               "node_modules/hammerjs/hammer.min.js"

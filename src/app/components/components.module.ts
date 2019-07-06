@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule , FormsModule } from '@angular/forms';
 
-
+// Angular AG Grid
+import { AgGridModule } from 'ag-grid-angular';
 
 import {
   MatTableModule,
@@ -32,6 +33,9 @@ import { ButtonbarComponent } from './buttonbar/buttonbar.component';
 import { DatagridComponent } from './datagrid/datagrid.component';
 import { PageComponent } from './page/page.component';
 
+import { DefaultMasterDetailPageComponent } from './default-master-detail-page/default-master-detail-page.component';
+import { DefaultListPageComponent } from './default-list-page/default-list-page.component';
+import { DefaultEditPageComponent } from './default-edit-page/default-edit-page.component';
 
 @NgModule({
   declarations: [
@@ -48,10 +52,14 @@ import { PageComponent } from './page/page.component';
     FormComponent,
     FormItemDirective,
     ButtonbarComponent,
-    PageComponent
+    PageComponent,
+    DefaultMasterDetailPageComponent,
+    DefaultListPageComponent,
+    DefaultEditPageComponent
   ],
   imports: [
     CommonModule,
+    AgGridModule.withComponents([]),
     ReactiveFormsModule,
     FormsModule,
     MatTableModule,
@@ -90,7 +98,10 @@ import { PageComponent } from './page/page.component';
     InputComponent,
     FormComponent,
     ButtonbarComponent,
-    PageComponent
+    PageComponent,
+    DefaultMasterDetailPageComponent,
+    DefaultListPageComponent,
+    DefaultEditPageComponent
   ],
 })
 export class ComponentsModule { }

@@ -1,18 +1,20 @@
-import { Component, OnInit, Input, Output, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, OnDestroy, OnChanges } from '@angular/core';
 import { GlobalsService } from 'src/app/core/services/globals.service';
 import { ViasConnectionService, ViasResponse } from 'src/app/core/services/vias-connection.service';
-import { DataGridColumn, SortObject, SortType, DataGridRefreshEvent } from '../datagrid/datagrid.component';
+import { DataGridColumn, SortObject, SortType, DataGridRefreshEvent, DataGridEvent } from '../datagrid/datagrid.component';
 import { FormItem, FormEvent } from '../form/FormItem';
 import { ButtonBarItem } from '../buttonbar/buttonbar.component';
 import { PageMeta, PageMetaService } from 'src/app/core/services/page-meta.service';
+import { ActivatedRoute, Router, ActivatedRouteSnapshot } from '@angular/router';
 
 @Component({
   selector: 'vias-page',
   template: '',
 })
-export class PageComponent implements OnInit, OnDestroy {
+export class PageComponent implements OnInit, OnDestroy, OnChanges {
   // Gerekli Bilgiler
-  pageMeta: string = '';
+  pageName: string = '';
+  moduleName: string = '';
   pageTitle: string = '';
   pid: number = 0;
   aid: number = 0;
@@ -29,20 +31,37 @@ export class PageComponent implements OnInit, OnDestroy {
   pageno: number = 1;
   totalPages: number = 1;
   filtersObj: object = {};
+  dgButtons: { hasAddBtn: boolean, hasEditBtn: boolean, hasDeleteBtn: boolean } = {
+    hasAddBtn: true, hasEditBtn: true, hasDeleteBtn: true
+  };
 
   // Buttonbar
   buttonBarItems: ButtonBarItem[] = [];
 
+  pageMeta: PageMeta;
 
   // Form
   formItems: FormItem[] = [];
 
-  constructor(protected globals: GlobalsService, protected viasService: ViasConnectionService) { }
+  constructor(
+    protected globals: GlobalsService,
+    protected viasService: ViasConnectionService,
+    protected next: ActivatedRoute,
+    protected route: Router
+  ) { }
 
   ngOnInit() {
-    if (this.pageMeta.length > 0 && this.pageMeta.indexOf('/') >= 0) {
+    const snapshot: ActivatedRouteSnapshot = this.next.snapshot;
+    if (snapshot.data.pageName != null) {
+      this.pageName = snapshot.data.pageName;
+    }
+    if (snapshot.data.moduleName != null) {
+      this.moduleName = snapshot.data.moduleName;
+    }
+    // console.log(this.moduleName);
+    if (this.moduleName.length > 0 && this.pageName.length > 0) {
       const pms: PageMetaService = new PageMetaService();
-      pms.getPage(this.pageMeta).then(
+      pms.getPage(this.moduleName, this.pageName).then(
         metaData => {
           console.log(metaData);
           this.generatePageFromMeta(metaData);
@@ -51,6 +70,8 @@ export class PageComponent implements OnInit, OnDestroy {
     }
   }
 
+  ngOnChanges() {
+  }
 
   ngOnDestroy() {
   }
@@ -59,6 +80,8 @@ export class PageComponent implements OnInit, OnDestroy {
   generatePageFromMeta(pageMeta: PageMeta) {
     this.columns = pageMeta.dataGridColumns;
     this.formItems = pageMeta.formItems;
+    this.pid = pageMeta.pid;
+    this.pageMeta = pageMeta;
   }
 
   /**
@@ -126,7 +149,19 @@ export class PageComponent implements OnInit, OnDestroy {
    * @param index selected item index
    * @param item DataGridColumn
    */
-  datagridClickHandler?(index: number, item: DataGridColumn);
+  // datagridClickHandler?(index: number, item: DataGridColumn);
+  datagridClickHandler?(event: DataGridEvent) {
+    // console.log(event.item);
+  }
+  datagridAddBtnClickHandler?(event: DataGridEvent) {
+    // this.route.navigate('');
+  }
+  datagridEditBtnClickHandler?(event: DataGridEvent) {
+    console.log(event.item);
+  }
+  datagridDeleteBtnClickHandler?(event: DataGridEvent) {
+    console.log(event.item);
+  }
   /**
    * Datagrid cift tiklaninca calisan method
    * @param index selected item index

@@ -1,9 +1,11 @@
+import { FieldTypes } from '../../core/FieldTypes';
+
 export interface FormEvent {
   payload: object;
 }
 
 export interface FormItem {
-  type: FormTypes;
+  type: FieldTypes;
   name: string;
   label?: string;
   value?: any;
@@ -11,24 +13,6 @@ export interface FormItem {
   options?: object[];
   validations?: FormValidator[];
 }
-export enum FormTypes {
-  AutoComplete = 'autocomplete',
-  Button = 'button',
-  CheckBox = 'checkbox',
-  DataGrid = 'datagrid',
-  DatePicker = 'datepicker',
-  DateCombo = 'datepicker',
-  ComboBox = 'dropdown',
-  DropDown = 'dropdown',
-  File = 'file',
-  Input = 'text',
-  Text = 'text',
-  Email = 'email',
-  Number = 'number',
-  Password = 'password',
-  Radio = 'radio'
-}
-
 export interface FormValidator {
   name: string;
   validator: any;
@@ -36,7 +20,7 @@ export interface FormValidator {
 }
 
 export class TextboxFormItem implements FormItem {
-  type = FormTypes.Input;
+  type = FieldTypes.Input;
   name;
   label?;
   validations?;
@@ -48,7 +32,7 @@ export class TextboxFormItem implements FormItem {
 }
 
 export class ButtonFormItem implements FormItem {
-  type = FormTypes.Input;
+  type = FieldTypes.Input;
   name;
   label?;
   validations?;
@@ -61,7 +45,7 @@ export class ButtonFormItem implements FormItem {
 }
 
 export class DropdownFormItem implements FormItem {
-  type = FormTypes.DropDown;
+  type = FieldTypes.DropDown;
   name;
   label?;
   validations?;
@@ -79,7 +63,7 @@ export class DropdownFormItem implements FormItem {
 }
 
 export class AutoCompleteFormItem implements FormItem {
-  type = FormTypes.DropDown;
+  type = FieldTypes.DropDown;
   name;
   label?;
   validations?;

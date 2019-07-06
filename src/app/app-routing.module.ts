@@ -5,7 +5,7 @@ import { ViasAuthService } from './core/services/vias-auth.service';
 import { Deneme2Component } from './deneme2/deneme2.component';
 
 const routes: Routes = [
-  { path: '', component: Deneme2Component },
+  // { path: '', component: Deneme2Component },
   {
     path: '',
     component: MainLayoutComponent,
@@ -21,6 +21,10 @@ const routes: Routes = [
       {
         path: 'planning',
         loadChildren: './planning/planning.module#PlanningModule'
+      },
+      {
+        path: 'hr',
+        loadChildren: './hr/hr.module#HrModule'
       }
     ],
     canActivate: [ViasAuthService]

@@ -3,6 +3,7 @@ import { FieldTypes } from '../../core/FieldTypes';
 import { AgGridNg2 } from 'ag-grid-angular';
 import { ColDef, IFilterComp, GridApi } from 'ag-grid-community';
 import { AutoCompleteFilterComponent } from './datagrid.AutoCompleteFilter';
+import { TextFilterComponent } from './datagrid.TextFilter';
 
 export interface DataGridColumn {
   dataField: string;
@@ -13,7 +14,7 @@ export interface DataGridColumn {
   dataType?: FieldTypes;
   sortField?: string;
   filterField?: string;
-  filterDataSource?: object[];
+  filterDataSource?: FilterOptions[];
   filterDataIdField?: string;
   filterDataLabelField?: string;
   labelFunction?: any;
@@ -56,8 +57,7 @@ export class DatagridComponent implements OnChanges {
   private _columns: DataGridColumn[] = [];
   @Input() currentPage: number = 1;
   @Input() totalPages: number = 1;
-  @Input() hasSelectButton: boolean = false;
-  @Input() multipleRowSelection: boolean = false;
+  @Input() options: {} = {};
   @Input() dgButtons: { hasAddBtn: boolean, hasEditBtn: boolean, hasDeleteBtn: boolean } = {
     hasAddBtn: true, hasEditBtn: true, hasDeleteBtn: true
   };
@@ -71,20 +71,34 @@ export class DatagridComponent implements OnChanges {
   private gridColumnApi;
   selectedRowIndex: number = -1;
   selectedRowItem: object = {};
+  sort: SortObject = { column_name: 'id', sort_type: SortType.Descending };
+  filterModel: {};
   columnDefs = [];
   rowselection;
   frameworkComponents;
+  multipleRowSelection;
   constructor() {
 
-    this.frameworkComponents = { AutoCompleteFilter: AutoCompleteFilterComponent };
+    this.frameworkComponents = {
+      AutoCompleteFilter: AutoCompleteFilterComponent,
+      TextFilter: TextFilterComponent
+    };
   }
 
 
   ngOnChanges() {
-    this.rowselection = this.multipleRowSelection ? 'single' : 'multiple';
+    this.rowselection = 'single';
+    if (this.options['multipleRowSelection'] !== undefined &&
+      this.options['multipleRowSelection'] === true) {
+      this.multipleRowSelection = 'multiple';
+    }
+
+    if (this.options['sortObj'] !== undefined) {
+      this.sort = this.options['sortObj'];
+    }
     // basliklari duzenle
     // eger baslik bir daha gelirse
-    // ve eskisi ile ayni ise  degistrime
+    // ve eskisi ile ayni ise degistrime
     if (this._columns !== this.columns) {
       this._columns = this.columns;
       this.columnDefs = [];
@@ -94,10 +108,17 @@ export class DatagridComponent implements OnChanges {
           headerName: col.headerText,
           field: col.dataField,
           sortable: true,
-          resizable: true
+          resizable: true,
+          filterParams: {
+            filterField: col.filterField,
+            filterDataIdField: col.filterDataIdField,
+            filterDataLabelField: col.filterDataLabelField,
+            filterDataSource: []
+          }
         };
 
-        if (this.hasSelectButton && i === 0) {
+        if (this.options['hasSelectButton'] !== undefined &&
+          this.options['hasSelectButton'] === true && i === 0) {
           coldef.checkboxSelection = true;
         }
         if (col.dataType === FieldTypes.Number) {
@@ -106,15 +127,10 @@ export class DatagridComponent implements OnChanges {
           coldef.filter = 'agDateColumnFilter';
         } else if (col.dataType === FieldTypes.DropDown) {
           coldef.filter = 'AutoCompleteFilter';
-          coldef.filterParams = [
-            { value: 0, label: 'Seciniz' } as FilterOptions
-          ];
-          if (col.filterDataSource) {
-            col.filterDataSource.forEach( data => {
-              coldef.filterParams.push(
-                { value: data['id'], label: data['name'] } as FilterOptions
-              );
-            });
+          if (col.filterDataSource !== undefined) {
+            coldef.filterParams.filterDataSource = col.filterDataSource;
+          } else {
+            coldef.filterParams.filterDataSource = [];
           }
           // coldef.filterParams = col.filterDataSource;
           // [
@@ -123,7 +139,7 @@ export class DatagridComponent implements OnChanges {
           //   { value: 2, label: 'veli' } as FilterOptions,
           // ];
         } else {
-          coldef.filter = 'agTextColumnFilter';
+          coldef.filter = 'TextFilter'; // 'agTextColumnFilter';
         }
         i++;
         this.columnDefs.push(coldef);
@@ -145,49 +161,54 @@ export class DatagridComponent implements OnChanges {
     this.prepareRefreshEvent(event.api);
   }
   prepareRefreshEvent(api: GridApi) {
-    const sort: SortObject = { column_name: '', sort_type: SortType.Descending };
     const sortModel: {
       colId: string;
       sort: string;
     }[] = api.getSortModel();
     sortModel.forEach(o => {
-      sort.column_name = o.colId;
-      sort.sort_type = o.sort === 'asc' ? SortType.Ascending : SortType.Descending;
+      const colDef = api.getColumnDef(o.colId);
+      // sort field alani bul
+      this.sort.column_name = this._columns.find(x => x.dataField === colDef.field).sortField;
+      this.sort.sort_type = o.sort === 'asc' ? SortType.Ascending : SortType.Descending;
     });
 
-    const filterModel: {} = this.parseFilter(api.getFilterModel());
+    this.filterModel = this.parseFilter(api);
 
     // 1. sayfaya don
     const e: DataGridRefreshEvent = {
       pageNo: 1,
-      sort: sort,
-      filters: filterModel
+      sort: this.sort,
+      filters: this.filterModel
     };
 
     this.refresh.emit(e);
   }
 
-  private parseFilter(filters: {}): object {
-    const filter: object = {};
+  private parseFilter(api: GridApi): object {
+    const filters: {} = api.getFilterModel();
+    const filter: {} = {};
     // tslint:disable-next-line: forin
     for (const key in filters) {
+      const colDef = api.getColumnDef(key);
+      // veritabanina gonderilecek filter alan adi
+      const filterKey: string = colDef.filterParams.filterField;
       const filterObj: {
         type: string;
         filter: string;
         filterType: string;
       } = filters[key];
       if (filterObj.filterType === 'text') {
-        filter[key] = filters[key].filter;
+        filter[filterKey] = filters[key].filter;
       } else if (filterObj.filterType === 'number') {
-        filter[key] = filters[key].filter;
+        filter[filterKey] = filters[key].filter;
       } else if (filterObj.filterType === 'date') {
-        filter[key] = {
-          first_date: new Date( filters[key].dateFrom).getTime() / 1000,
-          last_date: new Date( filters[key].dateTo).getTime() / 1000,
-          date_distance : 0
+        filter[filterKey] = {
+          first_date: new Date(filters[key].dateFrom).getTime() / 1000,
+          last_date: new Date(filters[key].dateTo).getTime() / 1000,
+          date_distance: 0
         };
       } else {
-        filter[key] = filters[key].value;
+        filter[filterKey] = filters[key].value;
       }
     }
 

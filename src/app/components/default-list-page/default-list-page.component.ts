@@ -6,6 +6,7 @@ import { ViasConnectionService, ViasResponse } from 'src/app/core/services/vias-
 import { ActivatedRoute, Router } from '@angular/router';
 import { PageMeta, ResponseField, ResponseFieldDataSourceType } from 'src/app/core/services/page-meta.service';
 import { DataGridEvent } from '../datagrid2/datagrid2.component';
+import { FilterOptions, DataGridColumn } from '../datagrid/datagrid.component';
 
 @Component({
   selector: 'vias-default-list-page',
@@ -26,6 +27,7 @@ export class DefaultListPageComponent extends PageComponent {
   }
 
   generatePageFromMeta(pageMeta: PageMeta) {
+    // parent cagir
     super.generatePageFromMeta(pageMeta);
     this.aid = pageMeta.listAid;
     this.hasButtonbar = pageMeta.hasButtonBarInList;
@@ -38,16 +40,16 @@ export class DefaultListPageComponent extends PageComponent {
       this.sortObj = pageMeta.dataGridInitialSort;
     }
     pageMeta.dataGridColumns.forEach(col => {
-      if (col.filterDataIdField === null) {
+      if (col.filterDataIdField === undefined) {
         col.filterDataIdField = 'id';
       }
-      if (col.filterDataLabelField === null) {
+      if (col.filterDataLabelField === undefined) {
         col.filterDataLabelField = 'name';
       }
-      if (col.filterField === null) {
+      if (col.filterField === undefined) {
         col.filterField = col.dataField;
       }
-      if (col.sortField === null) {
+      if (col.sortField === undefined) {
         col.sortField = col.dataField;
       }
     });
@@ -61,22 +63,39 @@ export class DefaultListPageComponent extends PageComponent {
     if (r.data) {
       this.pageMeta.responseFields.forEach(rf => {
         if (rf.responseFieldType === ResponseFieldDataSourceType.datagridDataSource) {
-          this.dataSource = r.data[rf.fieldName];
+          if (r.data[rf.fieldName] !== undefined) {
+            this.dataSource = r.data[rf.fieldName];
+          }
         } else if (rf.responseFieldType === ResponseFieldDataSourceType.datagridFilterDataSource) {
-          this.pageMeta.dataGridColumns.forEach(col => {
-            if (col.filterField === rf.componentName) {
-              col.filterDataSource = r.data[rf.fieldName];
-            }
+          // colonu bul
+          const colInd: number = this.pageMeta.dataGridColumns.findIndex(
+            x => x.filterField === rf.componentName
+          );
+          const col: DataGridColumn = this.pageMeta.dataGridColumns[colInd];
+          // seciniz ekle
+          col.filterDataSource = [{ value: 0, label: 'Seçiniz' } as FilterOptions];
+          // digerlerini ekle
+          r.data[rf.fieldName].forEach(obj => {
+            col.filterDataSource.push({
+              value: obj[col.filterDataIdField],
+              label: obj[col.filterDataLabelField]
+            });
           });
+          // changed lifecyle icin
+          // kolonu geri yaz
+          this.pageMeta.dataGridColumns.splice(colInd, 1, col);
         }
       });
 
-      if (r.data[this.pageMeta.pageTotalsField]) {
+      if (r.data[this.pageMeta.pageTotalsField] !== undefined) {
         this.totalPages = r.data[this.pageMeta.pageTotalsField];
       }
-      if (r.data[this.pageMeta.pageNoField]) {
-        this.totalPages = r.data[this.pageMeta.pageNoField];
+      if (r.data[this.pageMeta.pageNoField] !== undefined) {
+        this.pageno = r.data[this.pageMeta.pageNoField];
       }
+
+      // islem bitti colonlari gonder
+      this.columns = this.pageMeta.dataGridColumns;
     }
   }
 

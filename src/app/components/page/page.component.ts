@@ -35,6 +35,7 @@ export class PageComponent implements OnInit, OnDestroy, OnChanges {
   dgButtons: { hasAddBtn: boolean, hasEditBtn: boolean, hasDeleteBtn: boolean } = {
     hasAddBtn: true, hasEditBtn: true, hasDeleteBtn: true
   };
+  datagridOptions: {} = {};
 
   // Buttonbar
   buttonBarItems: ButtonBarItem[] = [];
@@ -80,8 +81,10 @@ export class PageComponent implements OnInit, OnDestroy, OnChanges {
 
 
   generatePageFromMeta(pageMeta: PageMeta) {
-    this.columns = pageMeta.dataGridColumns;
-    this.formItems = pageMeta.formItems;
+    this.datagridOptions['sortObj'] = this.sortObj;
+    // bunlar alt siniflara ovverride edilen yere tasinmali!!!
+    // this.columns = pageMeta.dataGridColumns;
+    // this.formItems = pageMeta.formItems;
     this.pid = pageMeta.pid;
     this.pageMeta = pageMeta;
   }
@@ -92,6 +95,7 @@ export class PageComponent implements OnInit, OnDestroy, OnChanges {
    */
   datagridRefreshHandler($event: DataGridRefreshEvent) {
     this.sortObj = $event.sort;
+    this.datagridOptions['sortObj'] = this.sortObj;
     this.pageno = $event.pageNo;
     this.filtersObj = $event.filters;
     console.log($event);

@@ -7,16 +7,6 @@ import { FilterOptions } from './datagrid.component';
 @Component({
     selector: 'vias-filter-cell',
     template: `<select #filterSelect [ngModel]="filterSelect" (ngModelChange)="onChange($event)"></select>`,
-    styles: [
-        `#filterSelect{
-            width:300px;
-        }`
-    ]
-    // <div style="padding: 4px; width: 200px;">
-    //     <vias-autocomplete #input (ngModelChange)="onChange($event)" [ngModel]="text" class="form-control">
-    //     </vias-autocomplete>
-    // </div>
-    //     `
 })
 export class AutoCompleteFilterComponent implements IFilterAngularComp, AfterViewInit {
     private params: IFilterParams;
@@ -31,7 +21,7 @@ export class AutoCompleteFilterComponent implements IFilterAngularComp, AfterVie
         this.params = params;
         this.valueGetter = params.valueGetter;
         if (params.colDef.filterParams !== null) {
-            this.options = params.colDef.filterParams as Array<FilterOptions>;
+            this.options = params.colDef.filterParams.filterDataSource as Array<FilterOptions>;
         }
     }
 
@@ -41,9 +31,12 @@ export class AutoCompleteFilterComponent implements IFilterAngularComp, AfterVie
     }
 
     doesFilterPass(params: IDoesFilterPassParams): boolean {
-        const val:any = params.data[this.params.colDef.field];
-        // tslint:disable-next-line: radix
-        return this.value === parseInt(val);
+        // Burasi iptal
+        // cunku db ye gidecek. hep true gelmesi lazim...
+        return true;
+        // const val: any = params.data[this.params.colDef.field];
+        // // tslint:disable-next-line: radix
+        // return this.value === parseInt(val);
     }
 
     getModel(): any {

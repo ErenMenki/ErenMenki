@@ -5,6 +5,7 @@ import { ReactiveFormsModule , FormsModule } from '@angular/forms';
 // Angular AG Grid
 import { AgGridModule } from 'ag-grid-angular';
 import { AutoCompleteFilterComponent } from './datagrid/datagrid.AutoCompleteFilter';
+import { TextFilterComponent } from './datagrid/datagrid.TextFilter';
 
 import {
   MatTableModule,
@@ -43,6 +44,7 @@ import { DefaultEditPageComponent } from './default-edit-page/default-edit-page.
   declarations: [
     DatagridComponent,
     AutoCompleteFilterComponent,
+    TextFilterComponent,
     CheckboxComponent,
     DropdownComponent,
     RadioComponent,
@@ -62,7 +64,7 @@ import { DefaultEditPageComponent } from './default-edit-page/default-edit-page.
   ],
   imports: [
     CommonModule,
-    AgGridModule.withComponents([AutoCompleteFilterComponent]),
+    AgGridModule.withComponents([AutoCompleteFilterComponent,TextFilterComponent]),
     ReactiveFormsModule,
     FormsModule,
     MatTableModule,

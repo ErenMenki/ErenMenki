@@ -19,7 +19,11 @@
     </mat-sidenav>
 
     <div [perfectScrollbar]="config" [disabled]="mediaMatcher.matches">
-      <router-outlet [className]="routeData.css"></router-outlet>
+        <mat-card>
+            <mat-card-content>
+              <router-outlet [className]="routeData.css"></router-outlet>
+            </mat-card-content>
+        </mat-card>
     </div>
 
   </mat-sidenav-container>

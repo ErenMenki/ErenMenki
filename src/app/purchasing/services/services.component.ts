@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PageComponent } from 'src/app/components/page/page.component';
 import { GlobalsService } from 'src/app/core/services/globals.service';
+import { StorageService } from 'src/app/core/services/storage.service';
 import { ViasConnectionService } from 'src/app/core/services/vias-connection.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -12,12 +13,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class ServicesComponent extends PageComponent implements OnInit {
 
   constructor(
+    protected storage: StorageService,
     protected globals: GlobalsService,
     protected viasService: ViasConnectionService,
     protected next: ActivatedRoute,
     protected route: Router
   ) {
-    super(globals, viasService, next, route);
+    super(storage, globals, viasService, next, route);
     if (next.snapshot.data.aid === 0) {
       this.hasDatagrid = true;
       this.hasEditForm = false;

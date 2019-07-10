@@ -16,6 +16,8 @@ export class DutyCodesPageMeta implements PageMeta {
     hasButtonBarInList = false;
     pageNoField = 'page_no';
     pageTotalField = 'total_page';
+    datagridHasAddBtn = true;
+    datagridHasEditBtn = true;
 
     responseFields = [
         {
@@ -87,6 +89,8 @@ export class IncidentScenesPageMeta implements PageMeta {
     hasButtonBarInList = false;
     pageNoField = 'page_no';
     pageTotalField = 'total_page';
+    datagridHasAddBtn = true;
+    datagridHasEditBtn = true;
 
     responseFields = [
         {

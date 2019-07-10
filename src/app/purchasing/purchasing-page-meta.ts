@@ -183,13 +183,15 @@ export class PurchaseRequestListPageMeta implements PageMeta {
         },
         {
             dataField: 'requester_name',
-            headerText:'Talep Eden',
+            headerText: 'Talep Eden',
             width: 150,
         },
         {
             dataField: 'project_code',
             headerText: 'Proje',
             width: 150,
+            dataType: FieldTypes.DropDown,
+            filterField: 'project_id'
         },
         {
             dataField: 'request_date',

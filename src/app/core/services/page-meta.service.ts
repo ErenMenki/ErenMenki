@@ -1,5 +1,5 @@
 import { Injectable, Injector } from '@angular/core';
-import { DataGridColumn } from 'src/app/components/datagrid/datagrid.component';
+import { DataGridColumn, SortObject } from 'src/app/components/datagrid/datagrid.component';
 import { FormItem } from 'src/app/components/form/FormItem';
 
 // import * as purchasing from 'src/app/purchasing/purchasing-page-meta';
@@ -42,6 +42,8 @@ export interface PageMeta {
   hasButtonBarInEdit?: boolean;
 
   dataGridColumns?: DataGridColumn[];
+
+  dataGridInitialSort?: SortObject;
 
   // list icin alanlar
   pageNoField?: string;

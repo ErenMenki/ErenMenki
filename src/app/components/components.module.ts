@@ -4,6 +4,7 @@ import { ReactiveFormsModule , FormsModule } from '@angular/forms';
 
 // Angular AG Grid
 import { AgGridModule } from 'ag-grid-angular';
+import { AutoCompleteFilterComponent } from './datagrid/datagrid.AutoCompleteFilter';
 
 import {
   MatTableModule,
@@ -16,7 +17,8 @@ import {
   MatDatepickerModule,
   MatNativeDateModule,
   MatAutocompleteModule,
-  MatIconModule
+  MatIconModule,
+  MatGridListModule,
 } from '@angular/material';
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { DropdownComponent } from './dropdown/dropdown.component';
@@ -40,6 +42,7 @@ import { DefaultEditPageComponent } from './default-edit-page/default-edit-page.
 @NgModule({
   declarations: [
     DatagridComponent,
+    AutoCompleteFilterComponent,
     CheckboxComponent,
     DropdownComponent,
     RadioComponent,
@@ -55,11 +58,11 @@ import { DefaultEditPageComponent } from './default-edit-page/default-edit-page.
     PageComponent,
     DefaultMasterDetailPageComponent,
     DefaultListPageComponent,
-    DefaultEditPageComponent
+    DefaultEditPageComponent,
   ],
   imports: [
     CommonModule,
-    AgGridModule.withComponents([]),
+    AgGridModule.withComponents([AutoCompleteFilterComponent]),
     ReactiveFormsModule,
     FormsModule,
     MatTableModule,
@@ -73,8 +76,9 @@ import { DefaultEditPageComponent } from './default-edit-page/default-edit-page.
     MatNativeDateModule,
     MatAutocompleteModule,
     MatIconModule,
+    MatGridListModule,
   ],
-  entryComponents:[
+  entryComponents: [
     CheckboxComponent,
     DropdownComponent,
     RadioComponent,

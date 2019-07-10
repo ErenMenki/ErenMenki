@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, OnDestroy, OnChanges } from '@angular/core';
 import { GlobalsService } from 'src/app/core/services/globals.service';
+import { StorageService } from 'src/app/core/services/storage.service';
 import { ViasConnectionService, ViasResponse } from 'src/app/core/services/vias-connection.service';
 import { DataGridColumn, SortObject, SortType, DataGridRefreshEvent, DataGridEvent } from '../datagrid/datagrid.component';
 import { FormItem, FormEvent } from '../form/FormItem';
@@ -27,7 +28,7 @@ export class PageComponent implements OnInit, OnDestroy, OnChanges {
   // Datagrid
   columns: DataGridColumn[] = [];
   dataSource: object[] = [];
-  sortObj: SortObject = { column_name: 'id', sort_type: SortType.Ascending };
+  sortObj: SortObject = { column_name: 'id', sort_type: SortType.Descending };
   pageno: number = 1;
   totalPages: number = 1;
   filtersObj: object = {};
@@ -44,6 +45,7 @@ export class PageComponent implements OnInit, OnDestroy, OnChanges {
   formItems: FormItem[] = [];
 
   constructor(
+    protected storage: StorageService,
     protected globals: GlobalsService,
     protected viasService: ViasConnectionService,
     protected next: ActivatedRoute,
@@ -89,7 +91,11 @@ export class PageComponent implements OnInit, OnDestroy, OnChanges {
    * @param $event DataGridRefreshEvent
    */
   datagridRefreshHandler($event: DataGridRefreshEvent) {
-
+    this.sortObj = $event.sort;
+    this.pageno = $event.pageNo;
+    this.filtersObj = $event.filters;
+    console.log($event);
+    this.refreshData();
   }
 
   /**
@@ -133,6 +139,7 @@ export class PageComponent implements OnInit, OnDestroy, OnChanges {
       },
       err => {
         alert(err);
+        console.log(err);
       });
   }
 

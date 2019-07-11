@@ -24,7 +24,7 @@ export class MaterialsPageMeta implements PageMeta {
     responseFields = [
         {
             fieldName: 'materials',
-            responseFieldType : ResponseFieldDataSourceType.datagridDataSource
+            responseFieldType: ResponseFieldDataSourceType.datagridDataSource
         },
         {
             fieldName: 'main_groups',
@@ -165,7 +165,7 @@ export class PurchaseRequestListPageMeta implements PageMeta {
     responseFields = [
         {
             fieldName: 'purchase_requests',
-            responseFieldType : ResponseFieldDataSourceType.datagridDataSource
+            responseFieldType: ResponseFieldDataSourceType.datagridDataSource
         },
         {
             fieldName: 'projects',
@@ -184,20 +184,21 @@ export class PurchaseRequestListPageMeta implements PageMeta {
         {
             dataField: 'requester_name',
             headerText: 'Talep Eden',
-            width: 150,
+            width: 150
         },
         {
             dataField: 'project_code',
             headerText: 'Proje',
             width: 150,
-            dataType: FieldTypes.DropDown,
+            dataType: FieldTypes.AutoComplete,
             filterField: 'project_id'
         },
         {
             dataField: 'request_date',
             headerText: 'Talep Tarihi',
             width: 150,
-            dataType: FieldTypes.DatePicker
+            dataType: FieldTypes.DatePicker,
+            sortField: 'date_created'
         },
         {
             dataField: 'delivery_date',
@@ -208,8 +209,25 @@ export class PurchaseRequestListPageMeta implements PageMeta {
         {
             dataField: 'status',
             headerText: 'Durumu',
+            align: 'center',
             width: 150,
-            labelFunction: 'bisi bisi'
+            labelFunction: function(params) { return params.data.status * 10; }
+        },
+        {
+            dataField: 'status',
+            headerText: 'Miktar',
+            align: 'center',
+            width: 150,
+            dataType: FieldTypes.Unit,
+            labelFunction: function(params) { return params.data.status * 19 / 3; }
+        },
+        {
+            dataField: 'status',
+            headerText: 'Fiyat',
+            align: 'center',
+            width: 150,
+            dataType: FieldTypes.Currency,
+            labelFunction: function(params) { return params.data.status * 21 / 2; }
         },
         {
             dataField: 'purchaser_name',
@@ -225,6 +243,7 @@ export class PurchaseRequestListPageMeta implements PageMeta {
         },
     ];
 }
+
 
 export abstract class PageMetaDefs {
     public static material = MaterialsPageMeta;

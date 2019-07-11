@@ -2,8 +2,8 @@ import { Component, Input, OnChanges, Output, EventEmitter, ViewChild } from '@a
 import { FieldTypes } from '../../core/FieldTypes';
 import { AgGridNg2 } from 'ag-grid-angular';
 import { ColDef, IFilterComp, GridApi } from 'ag-grid-community';
-import { AutoCompleteFilterComponent } from './datagrid.AutoCompleteFilter';
-import { TextFilterComponent } from './datagrid.TextFilter';
+import { AutoCompleteFilterComponent } from './datagrid.FilterAutoComplete';
+import { TextFilterComponent } from './datagrid.FilterText';
 
 export interface DataGridColumn {
   dataField: string;
@@ -104,6 +104,7 @@ export class DatagridComponent implements OnChanges {
       this.columnDefs = [];
       let i: number = 0;
       this._columns.forEach(col => {
+        const colStyles: [] = [];
         const coldef: ColDef = {
           headerName: col.headerText,
           field: col.dataField,
@@ -117,30 +118,65 @@ export class DatagridComponent implements OnChanges {
           }
         };
 
+        if (col.align !== undefined) {
+          colStyles['text-align'] = col.align;
+        }
+
+        if (col.width !== undefined) {
+          coldef.width = col.width;
+          coldef.minWidth = col.width;
+        }
+
+        if (col.labelFunction !== undefined) {
+          coldef.valueGetter = col.labelFunction;
+        }
+
         if (this.options['hasSelectButton'] !== undefined &&
           this.options['hasSelectButton'] === true && i === 0) {
           coldef.checkboxSelection = true;
         }
+        // Numerik
         if (col.dataType === FieldTypes.Number) {
           coldef.filter = 'agNumberColumnFilter';
+          colStyles['text-align'] = 'right';
+          coldef.valueFormatter = this.numberFormatter;
+
+          // Doviz
+        } else if (col.dataType === FieldTypes.Currency) {
+          coldef.filter = 'agNumberColumnFilter';
+          colStyles['text-align'] = 'right';
+          coldef.valueFormatter = this.currencyFormatter;
+
+          // Birim
+        } else if (col.dataType === FieldTypes.Unit) {
+          coldef.filter = 'agNumberColumnFilter';
+          colStyles['text-align'] = 'right';
+          coldef.valueFormatter = this.unitFormatter;
+
+          // Tarih
         } else if (col.dataType === FieldTypes.DatePicker) {
           coldef.filter = 'agDateColumnFilter';
-        } else if (col.dataType === FieldTypes.DropDown) {
+          coldef.valueFormatter = this.dateFormatter;
+          colStyles['text-align'] = 'right';
+
+          // AutoComplete
+        } else if (col.dataType === FieldTypes.DropDown ||
+          col.dataType === FieldTypes.AutoComplete
+        ) {
           coldef.filter = 'AutoCompleteFilter';
           if (col.filterDataSource !== undefined) {
             coldef.filterParams.filterDataSource = col.filterDataSource;
           } else {
             coldef.filterParams.filterDataSource = [];
           }
-          // coldef.filterParams = col.filterDataSource;
-          // [
-          //   { value: 0, label: 'Seciniz' } as FilterOptions,
-          //   { value: 1, label: 'ali' } as FilterOptions,
-          //   { value: 2, label: 'veli' } as FilterOptions,
-          // ];
+
+          // Text
         } else {
           coldef.filter = 'TextFilter'; // 'agTextColumnFilter';
         }
+
+        coldef.cellStyle = Object.assign({}, colStyles);
+
         i++;
         this.columnDefs.push(coldef);
       });
@@ -215,6 +251,24 @@ export class DatagridComponent implements OnChanges {
 
     return filter;
   }
+
+  // formatterlar
+  numberFormatter(params) {
+    return Intl.NumberFormat('tr-TR', {maximumFractionDigits: 2, minimumFractionDigits: 2}).format(params.value);
+  }
+  currencyFormatter(params) {
+    return Intl.NumberFormat('tr-TR', {maximumFractionDigits: 2, minimumFractionDigits: 2}).format(params.value) + ' TL';
+  }
+  unitFormatter(params) {
+    return Intl.NumberFormat('tr-TR', {maximumFractionDigits: 2, minimumFractionDigits: 2}).format(params.value) + ' adet';
+  }
+  dateFormatter(params) {
+    const d: Date = new Date(params.value * 1000);
+    return d.toLocaleDateString('tr-TR');
+  }
+
+
+
 
 
   onSelectionChanged() {

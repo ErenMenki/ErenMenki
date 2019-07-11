@@ -5,7 +5,7 @@ import { StorageService } from 'src/app/core/services/storage.service';
 import { ViasConnectionService, ViasResponse } from 'src/app/core/services/vias-connection.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PageMeta, ResponseField, ResponseFieldDataSourceType } from 'src/app/core/services/page-meta.service';
-import { DataGridEvent } from '../datagrid2/datagrid2.component';
+import { DataGridEvent } from '../datagrid/datagrid.component';
 import { FilterOptions, DataGridColumn } from '../datagrid/datagrid.component';
 
 @Component({

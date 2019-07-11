@@ -4,8 +4,8 @@ import { ReactiveFormsModule , FormsModule } from '@angular/forms';
 
 // Angular AG Grid
 import { AgGridModule } from 'ag-grid-angular';
-import { AutoCompleteFilterComponent } from './datagrid/datagrid.AutoCompleteFilter';
-import { TextFilterComponent } from './datagrid/datagrid.TextFilter';
+import { AutoCompleteFilterComponent } from './datagrid/datagrid.FilterAutoComplete';
+import { TextFilterComponent } from './datagrid/datagrid.FilterText';
 
 import {
   MatTableModule,

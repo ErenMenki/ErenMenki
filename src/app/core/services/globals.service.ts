@@ -5,7 +5,7 @@ export class GlobalsService {
   // App Title
   public appTitle: string = 'viaShipyard';
   // server url
-  public serverURL: string = 'http://vias.kuzeyshipyard.com:82/vias/';
+  public serverURL: string = 'http://vias.kuzeyshipyard.com/vias/';
   public selectedFirmId: number;
   public appVersion: string;
   public appVersionLabel: string;

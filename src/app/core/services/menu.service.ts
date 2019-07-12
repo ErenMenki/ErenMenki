@@ -44,8 +44,10 @@ const MENUITEMS = [
     icon: 'verified_user',
     children: [
       { state: 'list-request', name: 'Satınalma Talep', type: MenuType.link },
+      { state: 'list-tender', name: 'Satınalma Teklif', type: MenuType.link },
       { state: 'purchaseRequestReport', name: 'Talep Raporu', type: MenuType.link },
       { state: 'purchaseRequestDetailReport', name: 'Detayli Talep Raporu', type: MenuType.link },
+      { state: 'list-suppliers', name: 'Tedarikçi Listesi', type: MenuType.link },
     ]
   },
   {

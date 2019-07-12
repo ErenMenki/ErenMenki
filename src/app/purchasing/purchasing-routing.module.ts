@@ -14,6 +14,8 @@ const routes: Routes = [
   { path: 'services-edit', component: ServicesComponent, data: { pid: 2000, aid: 1, flag: 1 } },
 
   { path: 'list-request', component: DefaultListPageComponent, data: { moduleName: 'purchasing', pageName: 'purchaseRequestList' } },
+  { path: 'list-tender', component: DefaultListPageComponent, data: { moduleName: 'purchasing', pageName: 'purchaseTenderList' } },
+  { path: 'list-suppliers', component: DefaultListPageComponent, data: { moduleName: 'purchasing', pageName: 'suppliersList' } },
 ];
 
 @NgModule({

@@ -183,7 +183,7 @@ export class PurchaseRequestListPageMeta implements PageMeta {
         },
         {
             dataField: 'requester_name',
-            headerText:'Talep Eden',
+            headerText: 'Talep Eden',
             width: 150,
         },
         {
@@ -224,7 +224,169 @@ export class PurchaseRequestListPageMeta implements PageMeta {
     ];
 }
 
+export class PurchaseTenderListPageMeta implements PageMeta {
+    pid = 2500;
+
+    hasSelectButton = true;
+    hasMultiSelectDataGrid = true;
+    listAid = 0;
+    inspectAid = 1;
+    addAid = 2;
+    editAid = 3;
+    deleteAid = 4;
+
+    pageNoField = 'page_no';
+    pageTotalField = 'total_page';
+    datagridHasAddBtn = true;
+    datagridHasEditBtn = true;
+    datagridHasDeleteBtn = true;
+
+    responseFields = [
+        {
+            fieldName: 'purchase_tenders',
+            responseFieldType : ResponseFieldDataSourceType.datagridDataSource
+        },
+        {
+            fieldName: 'currency',
+            responseFieldType: ResponseFieldDataSourceType.datagridFilterDataSource,
+            componentName: 'currency_type'
+        },
+        {
+            fieldName: 'delivery_types',
+            responseFieldType: ResponseFieldDataSourceType.datagridFilterDataSource,
+            componentName: 'delivery_types'
+        },
+    ];
+
+    dataGridColumns = [
+        {
+            dataField: 'id',
+            headerText: 'Teklif No',
+            width: 80,
+            dataType: FieldTypes.Number
+        },
+        {
+            dataField: 'created_name',
+            headerText: 'İşlemi Yapan',
+            width: 150,
+        },
+        {
+            dataField: 'suppliers',
+            headerText: 'Tedarikçi',
+            width: 150,
+        },
+        {
+            dataField: 'delivery_name',
+            headerText: 'Teslim Tipi',
+            width: 150
+        },
+        {
+            dataField: 'currency_name',
+            headerText: 'Döviz Tipi',
+            width: 150,
+        },
+        {
+            dataField: 'request_date',
+            headerText: 'Teklif Tarihi',
+            width: 150,
+            dataType: FieldTypes.DatePicker
+        },
+        {
+            dataField: 'delivery_date',
+            headerText: 'Teslim Tarihi',
+            dataType: FieldTypes.DatePicker
+        },
+        {
+            dataField: 'status',
+            headerText: 'Durum',
+        },
+        {
+            dataField: 'requesters',
+            headerText: 'Talep Eden',
+        },
+        {
+            dataField: 'request_nos',
+            headerText: 'Talep Numaraları',
+        },
+    ];
+}
+
+
+export class SuppliersListPageMeta implements PageMeta {
+    pid = 2600;
+
+    hasSelectButton = true;
+    hasMultiSelectDataGrid = true;
+    listAid = 0;
+    inspectAid = 1;
+    addAid = 2;
+    editAid = 3;
+    deleteAid = 4;
+
+    pageNoField = 'page_no';
+    pageTotalField = 'total_page';
+    datagridHasAddBtn = true;
+    datagridHasEditBtn = true;
+    datagridHasDeleteBtn = true;
+
+    responseFields = [
+        {
+            fieldName: 'suppliers',
+            responseFieldType : ResponseFieldDataSourceType.datagridDataSource
+        },
+        {
+            fieldName: 'main_groups',
+            responseFieldType: ResponseFieldDataSourceType.datagridFilterDataSource,
+            componentName: 'main_groups'
+        },
+        {
+            fieldName: 'countries',
+            responseFieldType: ResponseFieldDataSourceType.datagridFilterDataSource,
+            componentName: 'countries'
+        },
+    ];
+
+    dataGridColumns = [
+        {
+            dataField: 'id',
+            headerText: 'Teklif No',
+            width: 80,
+            dataType: FieldTypes.Number
+        },
+        {
+            dataField: 'name',
+            headerText: 'Tedarikçi',
+            width: 150,
+        },
+        {
+            dataField: 'is_foreign',
+            headerText: 'Tedarik Tipi',
+            width: 150,
+        },
+        {
+            dataField: 'approved_supplier',
+            headerText: 'Tedarikçi Tipi',
+            width: 150
+        },
+        {
+            dataField: 'tax_number',
+            headerText: 'Vergi No',
+            width: 150,
+        },
+        {
+            dataField: 'town',
+            headerText: 'İlçe',
+            width: 150,
+        },
+        {
+            dataField: 'state',
+            headerText: 'Şehir',
+        }
+    ];
+}
 export abstract class PageMetaDefs {
     public static material = MaterialsPageMeta;
     public static purchaseRequestList = PurchaseRequestListPageMeta;
+    public static purchaseTenderList = PurchaseTenderListPageMeta;
+    public static suppliersList = SuppliersListPageMeta;
 }

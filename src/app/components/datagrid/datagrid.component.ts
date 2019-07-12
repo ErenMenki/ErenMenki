@@ -363,7 +363,7 @@ export class DatagridComponent implements OnChanges {
 
 
 
-  
+
   onSelectionChanged() {
     const selectedRows = this.gridApi.getSelectedRows();
     let selectedRowsString: string = '';

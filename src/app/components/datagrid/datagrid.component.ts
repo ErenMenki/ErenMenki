@@ -5,6 +5,7 @@ import { ColDef, IFilterComp, GridApi } from 'ag-grid-community';
 import { AutoCompleteFilterComponent } from './datagrid.FilterAutoComplete';
 import { TextFilterComponent } from './datagrid.FilterText';
 
+
 export interface DataGridColumn {
   dataField: string;
   headerText?: string;
@@ -18,7 +19,15 @@ export interface DataGridColumn {
   filterDataIdField?: string;
   filterDataLabelField?: string;
   labelFunction?: any;
-  currencyField?: string;
+  // tek basina icinde TL, USD gibi text olacak
+  // ya da unitDataSource icin id alani
+  unitField?: string;
+  // sadece get_currencies ve get_units ile ve unitField ile beraber kullanilacak
+  unitDataSource?: string;
+  // symbol right / left verildi ise o alanlar
+  // right ayni zamanda unit icin de kullanilabilir
+  currencyRightField?: string;
+  currencyLeftield?: string;
   footerData?: any;
   editable?: boolean;
   sticky?: boolean;
@@ -74,11 +83,11 @@ export class DatagridComponent implements OnChanges {
   sort: SortObject = { column_name: 'id', sort_type: SortType.Descending };
   filterModel: {};
   columnDefs = [];
+  sidebar = 'columns';
   rowselection;
   frameworkComponents;
   multipleRowSelection;
   constructor() {
-
     this.frameworkComponents = {
       AutoCompleteFilter: AutoCompleteFilterComponent,
       TextFilter: TextFilterComponent
@@ -96,6 +105,10 @@ export class DatagridComponent implements OnChanges {
     if (this.options['sortObj'] !== undefined) {
       this.sort = this.options['sortObj'];
     }
+
+    if (this.options['locale'] === undefined) {
+      this.options['locale'] = 'TR-tr';
+    }
     // basliklari duzenle
     // eger baslik bir daha gelirse
     // ve eskisi ile ayni ise degistrime
@@ -104,7 +117,11 @@ export class DatagridComponent implements OnChanges {
       this.columnDefs = [];
       let i: number = 0;
       this._columns.forEach(col => {
+        // sutunda bir params degiskeni lazimdi.
+        // bu bos duruyor, dolayisiyla
+        // diger degiskenleri de colStyles a  koyuyoruz
         const colStyles: [] = [];
+
         const coldef: ColDef = {
           headerName: col.headerText,
           field: col.dataField,
@@ -117,6 +134,7 @@ export class DatagridComponent implements OnChanges {
             filterDataSource: []
           }
         };
+
 
         if (col.align !== undefined) {
           colStyles['text-align'] = col.align;
@@ -135,8 +153,14 @@ export class DatagridComponent implements OnChanges {
           this.options['hasSelectButton'] === true && i === 0) {
           coldef.checkboxSelection = true;
         }
-        // Numerik
-        if (col.dataType === FieldTypes.Number) {
+
+        // ID alani
+        if (col.dataType === FieldTypes.Id) {
+          coldef.filter = 'agNumberColumnFilter';
+          colStyles['text-align'] = 'right';
+
+          // Numerik
+        } else if (col.dataType === FieldTypes.Number) {
           coldef.filter = 'agNumberColumnFilter';
           colStyles['text-align'] = 'right';
           coldef.valueFormatter = this.numberFormatter;
@@ -146,12 +170,24 @@ export class DatagridComponent implements OnChanges {
           coldef.filter = 'agNumberColumnFilter';
           colStyles['text-align'] = 'right';
           coldef.valueFormatter = this.currencyFormatter;
+          // eger currency yada unit var ise bu alandan degiskeni alacagiz...
+          if (col.unitField !== undefined) {
+            colStyles['currencyField'] = col.unitField;
+          } else if (col.unitDataSource !== undefined) {
+            colStyles['currencyDataSource'] = col.unitDataSource;
+          }
 
           // Birim
         } else if (col.dataType === FieldTypes.Unit) {
           coldef.filter = 'agNumberColumnFilter';
           colStyles['text-align'] = 'right';
           coldef.valueFormatter = this.unitFormatter;
+          // eger currency yada unit var ise bu alandan degiskeni alacagiz...
+          if (col.unitField !== undefined) {
+            colStyles['unitField'] = col.unitField;
+          } else if (col.unitDataSource !== undefined) {
+            colStyles['unitDataSource'] = col.unitDataSource;
+          }
 
           // Tarih
         } else if (col.dataType === FieldTypes.DatePicker) {
@@ -174,6 +210,7 @@ export class DatagridComponent implements OnChanges {
         } else {
           coldef.filter = 'TextFilter'; // 'agTextColumnFilter';
         }
+
 
         coldef.cellStyle = Object.assign({}, colStyles);
 
@@ -252,15 +289,69 @@ export class DatagridComponent implements OnChanges {
     return filter;
   }
 
-  // formatterlar
+
+
+  // public numberFormat(num: number) {
+  //   return Intl.NumberFormat('tr-TR', {maximumFractionDigits: 2, minimumFractionDigits: 2}).format(num);
+  // }
   numberFormatter(params) {
-    return Intl.NumberFormat('tr-TR', {maximumFractionDigits: 2, minimumFractionDigits: 2}).format(params.value);
+    return Intl.NumberFormat(
+      'tr-TR',
+      { maximumFractionDigits: 2, minimumFractionDigits: 2 }
+    ).format(params.value);
   }
   currencyFormatter(params) {
-    return Intl.NumberFormat('tr-TR', {maximumFractionDigits: 2, minimumFractionDigits: 2}).format(params.value) + ' TL';
+    let currencySymbolRight = '';
+    let currencySymbolLeft = '';
+    // get_currency
+    if (params.colDef.cellStyle.currencyDataSource !== undefined) {
+      params.colDef.cellStyle.currencyDataSource.forEach(c => {
+        if (c.id === params.colDef.cellStyle.currencyField) {
+          currencySymbolLeft = c.symbol_left;
+          currencySymbolRight = c.symbol_right;
+        }
+      });
+      // currencyRightField orn. customer_symbol_right  contractor_symbol_right
+    } else if (params.colDef.cellStyle.currencyRightField !== undefined) {
+      if (params.data[params.colDef.cellStyle.currencyRightField] !== undefined) {
+        currencySymbolRight = params.data[params.colDef.cellStyle.currencyRightField];
+      }
+      // currencyLeftField orn. customer_symbol_left contractor_symbol_left
+    } else if (params.colDef.cellStyle.currencyLeftField !== undefined) {
+      if (params.data[params.colDef.cellStyle.currencyLeftField] !== undefined) {
+        currencySymbolRight = params.data[params.colDef.cellStyle.currencyLeftField];
+      }
+      // TL USD vs
+    } else if (params.colDef.cellStyle.currencyField !== undefined) {
+      if (params.data[params.colDef.cellStyle.currencyField] !== undefined) {
+        currencySymbolRight = params.data[params.colDef.cellStyle.currencyField];
+      }
+    }
+    return currencySymbolLeft + ' ' +
+      Intl.NumberFormat(
+        'tr-TR',
+        { maximumFractionDigits: 2, minimumFractionDigits: 2 }
+      ).format(params.value) + ' ' + currencySymbolRight;
   }
   unitFormatter(params) {
-    return Intl.NumberFormat('tr-TR', {maximumFractionDigits: 2, minimumFractionDigits: 2}).format(params.value) + ' adet';
+    let unitName = '';
+    // get_units
+    if (params.colDef.cellStyle.unitDataSource !== undefined) {
+      params.colDef.cellStyle.unitDataSource.forEach(c => {
+        if (c.id === params.colDef.cellStyle.unitField) {
+          unitName = c.symbol_right;
+        }
+      });
+      // unit_name
+    } else if (params.colDef.cellStyle.unitField !== undefined) {
+      if (params.data[params.colDef.cellStyle.unitField] !== undefined) {
+        unitName = params.data[params.colDef.cellStyle.unitField];
+      }
+    }
+    return Intl.NumberFormat(
+      'tr-TR',
+      { maximumFractionDigits: 2, minimumFractionDigits: 2 }
+    ).format(params.value) + ' ' + unitName;
   }
   dateFormatter(params) {
     const d: Date = new Date(params.value * 1000);
@@ -271,6 +362,8 @@ export class DatagridComponent implements OnChanges {
 
 
 
+
+  
   onSelectionChanged() {
     const selectedRows = this.gridApi.getSelectedRows();
     let selectedRowsString: string = '';

@@ -16,4 +16,5 @@ export enum FieldTypes {
   Radio = 'radio',
   Currency = 'currency',
   Unit = 'unit',
+  Id = 'id'
 }

@@ -9,6 +9,7 @@ export enum ResponseFieldDataSourceType {
   datagridFilterDataSource,
   formDataSource,
   formFieldDataSource,
+  currencyDataSource,
 }
 
 export interface ResponseField {

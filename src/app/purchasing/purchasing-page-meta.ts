@@ -179,7 +179,7 @@ export class PurchaseRequestListPageMeta implements PageMeta {
             dataField: 'id',
             headerText: 'Talep No',
             width: 80,
-            dataType: FieldTypes.Number
+            dataType: FieldTypes.Id
         },
         {
             dataField: 'requester_name',

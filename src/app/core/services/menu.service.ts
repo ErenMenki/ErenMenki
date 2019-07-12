@@ -83,6 +83,12 @@ const MENUITEMS = [
     icon: 'bar_chart'
   },
   {
+    state: '/repair-planning/edit-project',
+    name: 'Proje Guncelle',
+    type: MenuType.link,
+    icon: 'bar_chart'
+  },
+  {
     state: 'planning',
     name: 'Talep',
     type: MenuType.sub,

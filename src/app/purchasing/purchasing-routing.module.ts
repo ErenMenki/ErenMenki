@@ -10,8 +10,8 @@ const routes: Routes = [
   { path: 'list-material', component: DefaultListPageComponent, data: { moduleName: 'purchasing', pageName: 'material' } },
   { path: 'edit-material', component: DefaultEditPageComponent, data: { moduleName: 'purchasing', pageName: 'material' } },
   { path: 'equipments', component: EquipmentsComponent },
-  { path: 'services-list', component: ServicesComponent, data: { pid: 2000, aid: 0, flag: 1 } },
-  { path: 'services-edit', component: ServicesComponent, data: { pid: 2000, aid: 1, flag: 1 } },
+  { path: 'list-services', component: ServicesComponent, data: { pid: 2000, aid: 0, flag: 1 } },
+  { path: 'edit-services', component: ServicesComponent, data: { pid: 2000, aid: 1, flag: 1 } },
 
   { path: 'list-request', component: DefaultListPageComponent, data: { moduleName: 'purchasing', pageName: 'purchaseRequestList' } },
   { path: 'list-tender', component: DefaultListPageComponent, data: { moduleName: 'purchasing', pageName: 'purchaseTenderList' } },

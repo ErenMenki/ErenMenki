@@ -1,8 +1,8 @@
 <mat-form-field style="width: 100%" [formGroup]="form">
     <input matInput [placeholder]="item.label" [matAutocomplete]="auto" [formControlName]="item.name">
-    <mat-autocomplete #auto="matAutocomplete" [displayWith]="valueMapper">
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="valueMapper" (optionSelected)="onSelected($event)">
       <mat-option *ngFor="let opt of filteredOptions | async" [value]="opt.data">
         {{opt.label}}
       </mat-option>
     </mat-autocomplete>
-  </mat-form-field>
+</mat-form-field>

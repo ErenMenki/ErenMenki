@@ -1,6 +1,7 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
 import { PageComponent } from '../page/page.component';
 import { GlobalsService } from 'src/app/core/services/globals.service';
+import { StorageService } from 'src/app/core/services/storage.service';
 import { ViasConnectionService, ViasResponse } from 'src/app/core/services/vias-connection.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PageMeta } from 'src/app/core/services/page-meta.service';
@@ -13,12 +14,13 @@ import { PageMeta } from 'src/app/core/services/page-meta.service';
 export class DefaultMasterDetailPageComponent extends PageComponent {
 
   constructor(
+    protected storage: StorageService,
     protected globals: GlobalsService,
     protected viasService: ViasConnectionService,
     protected next: ActivatedRoute,
     protected route: Router
   ) {
-    super(globals, viasService, next, route);
+    super(storage, globals, viasService, next, route);
     this.hasDatagrid = true;
     this.hasEditForm = true;
   }

@@ -1,8 +1,9 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import { FormItem } from '../form/FormItem';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
+import { MatAutocompleteSelectedEvent } from '@angular/material';
 
 @Component({
   selector: 'vias-autocomplete',
@@ -12,6 +13,7 @@ import { startWith, map } from 'rxjs/operators';
 export class AutocompleteComponent implements OnInit, OnChanges {
   @Input() item: FormItem;
   @Input() form: FormGroup;
+  @Output() onchange: EventEmitter<Object> = new EventEmitter<Object>();
   filteredOptions: Observable<object[]>;
   myControl: FormControl;
   constructor() { }
@@ -27,6 +29,9 @@ export class AutocompleteComponent implements OnInit, OnChanges {
       map(value => value ? this._filter(value) : this.item.options)
     );
   }
+  onSelected($event: MatAutocompleteSelectedEvent) {
+    this.onchange.emit($event.option.value);
+  }
   private _filter(value: string): object[] {
     const filterValue = typeof (value) === 'string' ? value.toLowerCase() : '';
     return this.item.options.filter(option =>
@@ -38,5 +43,5 @@ export class AutocompleteComponent implements OnInit, OnChanges {
     if (selection) {
       return selection['label'];
     }
-  };
+  }
 }

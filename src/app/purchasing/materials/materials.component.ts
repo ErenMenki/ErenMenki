@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GlobalsService } from 'src/app/core/services/globals.service';
 import { ViasConnectionService, ViasResponse } from 'src/app/core/services/vias-connection.service';
-import { DataGridRefreshEvent, DataGridColumn, SortObject, SortType } from 'src/app/components/datagrid2/datagrid2.component';
+import { DataGridRefreshEvent, DataGridColumn, SortObject, SortType } from 'src/app/components/datagrid/datagrid.component';
 import { FieldTypes } from 'src/app/core/FieldTypes';
 
 @Component({

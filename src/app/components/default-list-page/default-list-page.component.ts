@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { PageComponent } from '../page/page.component';
 import { GlobalsService } from 'src/app/core/services/globals.service';
+import { StorageService } from 'src/app/core/services/storage.service';
 import { ViasConnectionService, ViasResponse } from 'src/app/core/services/vias-connection.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PageMeta, ResponseField, ResponseFieldDataSourceType } from 'src/app/core/services/page-meta.service';
-import { DataGridEvent } from '../datagrid2/datagrid2.component';
+import { DataGridEvent } from '../datagrid/datagrid.component';
+import { FilterOptions, DataGridColumn } from '../datagrid/datagrid.component';
 
 @Component({
   selector: 'vias-default-list-page',
@@ -13,17 +15,19 @@ import { DataGridEvent } from '../datagrid2/datagrid2.component';
 })
 export class DefaultListPageComponent extends PageComponent {
   constructor(
+    protected storage: StorageService,
     protected globals: GlobalsService,
     protected viasService: ViasConnectionService,
     protected next: ActivatedRoute,
     protected route: Router
   ) {
-    super(globals, viasService, next, route);
+    super(storage, globals, viasService, next, route);
     this.hasDatagrid = true;
     this.hasEditForm = false;
   }
 
   generatePageFromMeta(pageMeta: PageMeta) {
+    // parent cagir
     super.generatePageFromMeta(pageMeta);
     this.aid = pageMeta.listAid;
     this.hasButtonbar = pageMeta.hasButtonBarInList;
@@ -32,6 +36,23 @@ export class DefaultListPageComponent extends PageComponent {
       hasEditBtn: pageMeta.datagridHasEditBtn,
       hasDeleteBtn: pageMeta.datagridHasDeleteBtn
     };
+    if (pageMeta.dataGridInitialSort) {
+      this.sortObj = pageMeta.dataGridInitialSort;
+    }
+    pageMeta.dataGridColumns.forEach(col => {
+      if (col.filterDataIdField === undefined) {
+        col.filterDataIdField = 'id';
+      }
+      if (col.filterDataLabelField === undefined) {
+        col.filterDataLabelField = 'name';
+      }
+      if (col.filterField === undefined) {
+        col.filterField = col.dataField;
+      }
+      if (col.sortField === undefined) {
+        col.sortField = col.dataField;
+      }
+    });
     console.log(pageMeta);
     this.refreshData();
   }
@@ -42,22 +63,39 @@ export class DefaultListPageComponent extends PageComponent {
     if (r.data) {
       this.pageMeta.responseFields.forEach(rf => {
         if (rf.responseFieldType === ResponseFieldDataSourceType.datagridDataSource) {
-          this.dataSource = r.data[rf.fieldName];
+          if (r.data[rf.fieldName] !== undefined) {
+            this.dataSource = r.data[rf.fieldName];
+          }
         } else if (rf.responseFieldType === ResponseFieldDataSourceType.datagridFilterDataSource) {
-          this.pageMeta.dataGridColumns.forEach(col => {
-            if (col.dataField === rf.componentName) {
-              col.filterDataSource = r.data[rf.fieldName];
-            }
+          // colonu bul
+          const colInd: number = this.pageMeta.dataGridColumns.findIndex(
+            x => x.filterField === rf.componentName
+          );
+          const col: DataGridColumn = this.pageMeta.dataGridColumns[colInd];
+          // seciniz ekle
+          col.filterDataSource = [{ value: 0, label: 'Seçiniz' } as FilterOptions];
+          // digerlerini ekle
+          r.data[rf.fieldName].forEach(obj => {
+            col.filterDataSource.push({
+              value: obj[col.filterDataIdField],
+              label: obj[col.filterDataLabelField]
+            });
           });
+          // changed lifecyle icin
+          // kolonu geri yaz
+          this.pageMeta.dataGridColumns.splice(colInd, 1, col);
         }
       });
 
-      if (r.data[this.pageMeta.pageTotalsField]) {
+      if (r.data[this.pageMeta.pageTotalsField] !== undefined) {
         this.totalPages = r.data[this.pageMeta.pageTotalsField];
       }
-      if (r.data[this.pageMeta.pageNoField]) {
-        this.totalPages = r.data[this.pageMeta.pageNoField];
+      if (r.data[this.pageMeta.pageNoField] !== undefined) {
+        this.pageno = r.data[this.pageMeta.pageNoField];
       }
+
+      // islem bitti colonlari gonder
+      this.columns = this.pageMeta.dataGridColumns;
     }
   }
 

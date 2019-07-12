@@ -3,8 +3,8 @@ export enum FieldTypes {
   Button = 'button',
   CheckBox = 'checkbox',
   DataGrid = 'datagrid',
-  DatePicker = 'datepicker',
-  DateCombo = 'datepicker',
+  DatePicker = 'date',
+  DateCombo = 'date',
   ComboBox = 'dropdown',
   DropDown = 'dropdown',
   File = 'file',
@@ -13,5 +13,7 @@ export enum FieldTypes {
   Email = 'email',
   Number = 'number',
   Password = 'password',
-  Radio = 'radio'
+  Radio = 'radio',
+  Currency = 'currency',
+  Unit = 'unit',
 }

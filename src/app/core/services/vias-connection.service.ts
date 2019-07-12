@@ -27,6 +27,11 @@ export class ViasConnectionService {
 
   public send(pid: number, aid: number, data: object): Promise<ViasResponse> {
     return new Promise((resolve, reject) => {
+      let debugStr: string = 'json= 1&';
+      debugStr += 'pid=' + pid.toString() + '&';
+      debugStr += 'aid=' + aid.toString() + '&';
+      debugStr += 'data=' + JSON.stringify(data);
+      console.log(debugStr);
       const params: FormData = new FormData();
       params.append('json', '1');
       params.append('pid', pid.toString());

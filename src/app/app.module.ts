@@ -3,6 +3,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 
+// Storage
+import { StorageService } from './core/services/storage.service';
 // Globals
 import { GlobalsService } from './core/services/globals.service';
 // vias service
@@ -21,6 +23,7 @@ import {
   MatToolbarModule,
   MatTooltipModule,
   MatListModule,
+  MatCardModule,
   MatProgressBarModule,
   MatSelectModule
 } from '@angular/material';
@@ -93,6 +96,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     MatTooltipModule,
     MatListModule,
     MatSelectModule,
+    MatCardModule,
     MatProgressBarModule,
     FlexLayoutModule,
     LoadingBarModule,
@@ -100,6 +104,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     ComponentsModule
   ],
   providers: [
+    StorageService,
     GlobalsService,
     ViasConnectionService,
     PageMetaService,

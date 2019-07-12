@@ -4,7 +4,7 @@ import { Validators } from '@angular/forms';
 
 
 export class DutyCodesPageMeta implements PageMeta {
-    pid = 170;
+    pid = 175;
     hasSelectButton = true;
     hasMultiSelectDataGrid = true;
     listAid = 0;

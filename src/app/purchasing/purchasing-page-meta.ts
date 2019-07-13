@@ -268,7 +268,7 @@ export class PurchaseTenderListPageMeta implements PageMeta {
         },
         {
             fieldName: 'currency',
-            responseFieldType: ResponseFieldDataSourceType.datagridFilterDataSource,
+            responseFieldType: ResponseFieldDataSourceType.currencyDataSource,
             componentName: 'currency_type'
         },
         {
@@ -283,7 +283,7 @@ export class PurchaseTenderListPageMeta implements PageMeta {
             dataField: 'id',
             headerText: 'Teklif No',
             width: 80,
-            dataType: FieldTypes.Number
+            dataType: FieldTypes.Id
         },
         {
             dataField: 'created_name',

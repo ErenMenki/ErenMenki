@@ -39,53 +39,46 @@ export class DefaultListPageComponent extends PageComponent {
     if (pageMeta.dataGridInitialSort) {
       this.sortObj = pageMeta.dataGridInitialSort;
     }
-    pageMeta.dataGridColumns.forEach(col => {
-      if (col.filterDataIdField === undefined) {
-        col.filterDataIdField = 'id';
-      }
-      if (col.filterDataLabelField === undefined) {
-        col.filterDataLabelField = 'name';
-      }
-      if (col.filterField === undefined) {
-        col.filterField = col.dataField;
-      }
-      if (col.sortField === undefined) {
-        col.sortField = col.dataField;
-      }
-    });
+
     console.log(pageMeta);
     this.refreshData();
   }
 
   viasServiceHandler(r: ViasResponse) {
-    console.log(r);
-    console.log('------cevap geldi');
+    super.viasServiceHandler(r);
     if (r.data) {
-      this.pageMeta.responseFields.forEach(rf => {
-        if (rf.responseFieldType === ResponseFieldDataSourceType.datagridDataSource) {
-          if (r.data[rf.fieldName] !== undefined) {
-            this.dataSource = r.data[rf.fieldName];
-          }
-        } else if (rf.responseFieldType === ResponseFieldDataSourceType.datagridFilterDataSource) {
-          // colonu bul
-          const colInd: number = this.pageMeta.dataGridColumns.findIndex(
-            x => x.filterField === rf.componentName
-          );
-          const col: DataGridColumn = this.pageMeta.dataGridColumns[colInd];
-          // seciniz ekle
-          col.filterDataSource = [{ value: 0, label: 'Seçiniz' } as FilterOptions];
-          // digerlerini ekle
-          r.data[rf.fieldName].forEach(obj => {
-            col.filterDataSource.push({
-              value: obj[col.filterDataIdField],
-              label: obj[col.filterDataLabelField]
-            });
-          });
-          // changed lifecyle icin
-          // kolonu geri yaz
-          this.pageMeta.dataGridColumns.splice(colInd, 1, col);
-        }
-      });
+      const resp = this.responseFieldParserForDataGrid(
+        r.data,
+        this.pageMeta.responseFields,
+        this.pageMeta.dataGridColumns
+      );
+      this.dataSource = resp.dataSource;
+      this.columns = resp.dataGridColumns;
+      // this.pageMeta.responseFields.forEach(rf => {
+      //   if (rf.responseFieldType === ResponseFieldDataSourceType.datagridDataSource) {
+      //     if (r.data[rf.fieldName] !== undefined) {
+      //       this.dataSource = r.data[rf.fieldName];
+      //     }
+      //   } else if (rf.responseFieldType === ResponseFieldDataSourceType.datagridFilterDataSource) {
+      //     // colonu bul
+      //     const colInd: number = this.pageMeta.dataGridColumns.findIndex(
+      //       x => x.filterField === rf.componentName
+      //     );
+      //     const col: DataGridColumn = this.pageMeta.dataGridColumns[colInd];
+      //     // seciniz ekle
+      //     col.filterDataSource = [{ value: 0, label: 'Seçiniz' } as FilterOptions];
+      //     // digerlerini ekle
+      //     r.data[rf.fieldName].forEach(obj => {
+      //       col.filterDataSource.push({
+      //         value: obj[col.filterDataIdField],
+      //         label: obj[col.filterDataLabelField]
+      //       });
+      //     });
+      //     // changed lifecyle icin
+      //     // kolonu geri yaz
+      //     this.pageMeta.dataGridColumns.splice(colInd, 1, col);
+      //   }
+      // });
 
       if (r.data[this.pageMeta.pageTotalsField] !== undefined) {
         this.totalPages = r.data[this.pageMeta.pageTotalsField];

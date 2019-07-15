@@ -16,6 +16,7 @@ export interface ResponseField {
   fieldName: string;
   responseFieldType: ResponseFieldDataSourceType;
   componentName?: string;
+  isKeyValuePair?: boolean;
 }
 
 export interface PageMeta {

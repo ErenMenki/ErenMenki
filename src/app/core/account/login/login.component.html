@@ -11,7 +11,8 @@
       <div fxFlex.gt-xs="50" fxFlex="100">
         <mat-card-content class="pa-3">
           <h1 class="mb-0">Giris</h1>
-          <p class="mat-text-muted text-md mt-0 mb-2">Lutfen kullanici adinizi ve sifrenizi girin</p>
+          <!-- <p class="mat-text-muted text-md mt-0 mb-2">Lutfen kullanici adinizi ve sifrenizi girin</p> -->
+          <p class="mat-text-warn" #errorTxt></p>
           <form [formGroup]="form" (ngSubmit)="login()">
             <div fxLayout="column" fxLayoutAlign="space-around">
               <div class="pb-1">
@@ -31,7 +32,7 @@
                   class="mat-text-warn">Sifre girmeniz gerekiyor.</small>
               </div>
               <div class="pb-1">
-                <mat-checkbox>Beni hatirla</mat-checkbox>
+                <mat-checkbox [formControl]="form.controls['remember']" >Beni hatirla</mat-checkbox>
               </div>
               <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">Giris</button>
             </div>

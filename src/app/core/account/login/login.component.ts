@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -11,6 +11,8 @@ import { ViasConnectionService, ViasResponse } from '../../services/vias-connect
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
+  @ViewChild('errorTxt') errorTxt: ElementRef;
+
   public form: FormGroup;
   constructor(
     private fb: FormBuilder,
@@ -18,11 +20,25 @@ export class LoginComponent implements OnInit {
     public globals: GlobalsService,
     private viasService: ViasConnectionService) { }
 
+    private username: string = '';
+    private rememberMe: boolean = false;
+
   ngOnInit() {
     this.form = this.fb.group({
       username: [null, Validators.compose([Validators.required])],
-      password: [null, Validators.compose([Validators.required])]
+      password: [null, Validators.compose([Validators.required])],
+      remember: []
     });
+    if (this.globals.rememberLoginName !== undefined
+      && this.globals.rememberLoginName !== null
+      && this.globals.rememberLoginName.length > 0
+    ) {
+        this.form.setValue({
+          username: this.globals.rememberLoginName,
+          password: '',
+          remember: true
+        });
+    }
   }
 
   onSubmit() {
@@ -36,25 +52,41 @@ export class LoginComponent implements OnInit {
     }
     return str;
   }
+
+  validateLoginData(): boolean {
+    let allOk: boolean = true;
+    if (! (this.form.value.username.length > 2) ) {
+      this.errorTxt.nativeElement.innerHTML = 'Kullanınıcı Adınızı Hatalıdır';
+      allOk = false;
+    }
+    if (! (this.form.value.password.length > 2) ) {
+      this.errorTxt.nativeElement.innerHTML = 'Şifreniz Hatalıdır';
+      allOk = false;
+    }
+    return allOk;
+  }
+
   // ?data={%22username%22:%22hob%22,%22password%22:%22iZkWyZleGNlUsRmeX1GdXJ1aKVVVB1TP%22,%22firmId%22:2}
   login(): void {
-    // console.log(this.form.value);
-    if (this.form.value.username.length > 2 && this.form.value.password.length > 2) {
+    console.log(this.form.value);
+    if (this.validateLoginData()) {
+      if (this.form.value.remember === true) {
+        this.globals.rememberLoginName = this.form.value.username;
+      } else {
+        this.globals.rememberLoginName = '';
+      }
       this.viasService.send(0, 0, {
         username: this.form.value.username,
         password: this.encryptPassword(this.form.value.password),
-        firmId: 2
+        firmId: this.globals.selectedFirmId,
       }).then(response => this.serviceHandler(response));
-    } else {
-      // handleErrors("e_12345");
-      alert('hata');
     }
   }
   // login servis handler
   serviceHandler(r: ViasResponse) {
     // hatalar
     if (r.error) {
-
+      this.errorTxt.nativeElement.innerHTML = 'Kullanıcı Adınız veya Şifreniz Hatalıdır';
     }
     // sayfa yetkileri
     if (r.perm) {
@@ -70,7 +102,7 @@ export class LoginComponent implements OnInit {
       if (r.data.hasOwnProperty('login_bilgileri')) {
         const login = r.data['login_bilgileri'];
         // global degiskenleri set et
-        this.globals.userName = login.name + ' ' + login.surname;
+        this.globals.userNameSurname = login.name + ' ' + login.surname;
         this.globals.userId = login.id;
         this.globals.userSectionId = login.section_id;
         this.globals.userDepartmentId = login.department_id;

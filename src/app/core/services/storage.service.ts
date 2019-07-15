@@ -7,8 +7,11 @@ export class StorageService {
 
   constructor() { }
 
-  public getItem(key: string, isPermenant: boolean): any {
+  public getItem(key: string, isPermenant?: boolean): any {
     let value: string;
+    if (isPermenant === undefined) {
+      isPermenant = false;
+    }
     if (isPermenant) {
       value = localStorage.getItem(key);
     } else {
@@ -17,7 +20,10 @@ export class StorageService {
     return value;
   }
 
-  public setItem(key: string, value: string, isPermenant: boolean): void {
+  public setItem(key: string, value: any, isPermenant?: boolean): void {
+    if (isPermenant === undefined) {
+      isPermenant = false;
+    }
     if (isPermenant) {
       localStorage.setItem(key, value);
     } else {
@@ -25,7 +31,10 @@ export class StorageService {
     }
   }
 
-  public deleteItem(key: string, isPermenant: boolean): any {
+  public deleteItem(key: string, isPermenant?: boolean): any {
+    if (isPermenant === undefined) {
+      isPermenant = false;
+    }
     if (isPermenant) {
       localStorage.removeItem(key);
     } else {

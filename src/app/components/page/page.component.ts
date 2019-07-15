@@ -2,10 +2,10 @@ import { Component, OnInit, Input, Output, OnDestroy, OnChanges } from '@angular
 import { GlobalsService } from 'src/app/core/services/globals.service';
 import { StorageService } from 'src/app/core/services/storage.service';
 import { ViasConnectionService, ViasResponse } from 'src/app/core/services/vias-connection.service';
-import { DataGridColumn, SortObject, SortType, DataGridRefreshEvent, DataGridEvent } from '../datagrid/datagrid.component';
+import { DataGridColumn, SortObject, SortType, DataGridRefreshEvent, DataGridEvent, FilterOptions } from '../datagrid/datagrid.component';
 import { FormItem, FormEvent } from '../form/FormItem';
 import { ButtonBarItem } from '../buttonbar/buttonbar.component';
-import { PageMeta, PageMetaService } from 'src/app/core/services/page-meta.service';
+import { PageMeta, PageMetaService, ResponseField, ResponseFieldDataSourceType } from 'src/app/core/services/page-meta.service';
 import { ActivatedRoute, Router, ActivatedRouteSnapshot } from '@angular/router';
 
 @Component({
@@ -153,6 +153,72 @@ export class PageComponent implements OnInit, OnDestroy, OnChanges {
    * standart listeleme sonucu
   */
   viasServiceHandler(r: ViasResponse) {
+    console.log(r);
+    console.log('------cevap geldi');
+  }
+
+  responseFieldParserForDataGrid(
+    data: object,
+    responseFields: ResponseField[],
+    dataGridColumns: DataGridColumn[]
+  ): { dataSource: object[], dataGridColumns: DataGridColumn[] } {
+
+    let dataSource: object[] = [];
+
+    // bazi alanlari set et.
+    dataGridColumns.forEach(col => {
+      if (col.filterDataIdField === undefined) {
+        col.filterDataIdField = 'id';
+      }
+      if (col.filterDataLabelField === undefined) {
+        col.filterDataLabelField = 'name';
+      }
+      if (col.filterField === undefined) {
+        col.filterField = col.dataField;
+      }
+      if (col.sortField === undefined) {
+        col.sortField = col.dataField;
+      }
+    });
+
+    responseFields.forEach(rf => {
+      if (rf.responseFieldType === ResponseFieldDataSourceType.datagridDataSource) {
+        if (data[rf.fieldName] !== undefined) {
+          dataSource = data[rf.fieldName];
+        }
+      } else if (rf.responseFieldType === ResponseFieldDataSourceType.datagridFilterDataSource) {
+        // colonu bul
+        const colInd: number = dataGridColumns.findIndex(
+          x => x.filterField === rf.componentName
+        );
+        const col: DataGridColumn = dataGridColumns[colInd];
+        col.filterDataSource = [];
+        // digerlerini ekle
+        for (const[key, obj] of Object.entries(data[rf.fieldName])) {
+          if (obj !== undefined) {
+            if (rf.isKeyValuePair !== undefined) {
+              col.filterDataSource.push({
+                // tslint:disable-next-line: radix
+                value: parseInt(key),
+                label: obj.toString()
+              });
+            } else {
+              if (obj[col.filterDataLabelField].toString().length > 0 ) {
+                col.filterDataSource.push({
+                  value: obj[col.filterDataIdField],
+                  label: obj[col.filterDataLabelField]
+                });
+              }
+            }
+          }
+        }
+        // changed lifecyle icin
+        // kolonu geri yaz
+        dataGridColumns.splice(colInd, 1, col);
+      }
+    });
+
+    return { dataSource: dataSource, dataGridColumns: dataGridColumns };
   }
 
   /**

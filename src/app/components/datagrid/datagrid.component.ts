@@ -4,6 +4,8 @@ import { AgGridNg2 } from 'ag-grid-angular';
 import { ColDef, IFilterComp, GridApi } from 'ag-grid-community';
 import { AutoCompleteFilterComponent } from './datagrid.FilterAutoComplete';
 import { TextFilterComponent } from './datagrid.FilterText';
+import { NumericFilterComponent } from './datagrid.FilterNumeric';
+import { DateFilterComponent } from './datagrid.FilterDate';
 
 
 export interface DataGridColumn {
@@ -92,7 +94,9 @@ export class DatagridComponent implements OnChanges {
   constructor() {
     this.frameworkComponents = {
       AutoCompleteFilter: AutoCompleteFilterComponent,
-      TextFilter: TextFilterComponent
+      TextFilter: TextFilterComponent,
+      NumericFilter: NumericFilterComponent,
+      DateFilter: DateFilterComponent,
     };
   }
 
@@ -133,7 +137,8 @@ export class DatagridComponent implements OnChanges {
             filterField: col.filterField,
             filterDataIdField: col.filterDataIdField,
             filterDataLabelField: col.filterDataLabelField,
-            filterDataSource: []
+            filterDataSource: [],
+            isLocalRefresh: this.options['isLocalRefresh'] ? true : false,
           }
         };
 
@@ -166,12 +171,14 @@ export class DatagridComponent implements OnChanges {
           coldef.filter = 'agNumberColumnFilter';
           colStyles['text-align'] = 'right';
           coldef.valueFormatter = this.numberFormatter;
+          coldef.filter = 'NumericFilter';
 
           // Doviz
         } else if (col.dataType === FieldTypes.Currency) {
           coldef.filter = 'agNumberColumnFilter';
           colStyles['text-align'] = 'right';
           coldef.valueFormatter = this.currencyFormatter;
+          coldef.filter = 'NumericFilter';
           // eger currency yada unit var ise bu alandan degiskeni alacagiz...
           if (col.unitField !== undefined) {
             colStyles['currencyField'] = col.unitField;
@@ -191,6 +198,7 @@ export class DatagridComponent implements OnChanges {
           coldef.filter = 'agNumberColumnFilter';
           colStyles['text-align'] = 'right';
           coldef.valueFormatter = this.unitFormatter;
+          coldef.filter = 'NumericFilter';
           // eger currency yada unit var ise bu alandan degiskeni alacagiz...
           if (col.unitField !== undefined) {
             colStyles['unitField'] = col.unitField;
@@ -203,6 +211,7 @@ export class DatagridComponent implements OnChanges {
           coldef.filter = 'agDateColumnFilter';
           coldef.valueFormatter = this.dateFormatter;
           colStyles['text-align'] = 'right';
+          coldef.filter = 'DateFilter';
 
           // AutoComplete
         } else if (col.dataType === FieldTypes.DropDown ||
@@ -248,6 +257,9 @@ export class DatagridComponent implements OnChanges {
     this.prepareRefreshEvent(event.api);
   }
   prepareRefreshEvent(api: GridApi) {
+    if (this.options['isLocalRefresh']) {
+      return;
+    }
     const sortModel: {
       colId: string;
       sort: string;
@@ -307,7 +319,7 @@ export class DatagridComponent implements OnChanges {
     let txt: string = '';
     params.colDef.filterParams.filterDataSource.forEach( obj => {
       // tslint:disable-next-line: radix
-      if (obj.value === parseInt(params.value) ) {
+      if (parseInt(obj.value) === parseInt(params.value)) {
         txt = obj.label;
         return txt;
       }

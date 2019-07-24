@@ -25,7 +25,8 @@ import {
   MatListModule,
   MatCardModule,
   MatProgressBarModule,
-  MatSelectModule
+  MatSelectModule,
+  MAT_DATE_LOCALE
 } from '@angular/material';
 // Angular Flexlayout
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -108,6 +109,10 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     GlobalsService,
     ViasConnectionService,
     PageMetaService,
+    {
+      provide: MAT_DATE_LOCALE,
+      useValue: 'tr-TR'
+    },
     {
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG

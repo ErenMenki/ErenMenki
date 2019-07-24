@@ -16,6 +16,8 @@ const routes: Routes = [
   { path: 'list-request', component: DefaultListPageComponent, data: { moduleName: 'purchasing', pageName: 'purchaseRequestList' } },
   { path: 'list-tender', component: DefaultListPageComponent, data: { moduleName: 'purchasing', pageName: 'purchaseTenderList' } },
   { path: 'list-suppliers', component: DefaultListPageComponent, data: { moduleName: 'purchasing', pageName: 'suppliersList' } },
+  { path: 'list-equipment-groups', component: DefaultListPageComponent, data: { moduleName: 'purchasing', pageName: 'equipmentGroupList' } },
+  
 ];
 
 @NgModule({

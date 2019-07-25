@@ -1,6 +1,6 @@
 import { PageMeta, ResponseFieldDataSourceType } from '../core/services/page-meta.service';
 import { FieldTypes } from '../core/FieldTypes';
-// import { StatusVars } from '../core/StatusVars';
+import { StatusVars } from '../core/StatusVars';
 import { Validators } from '@angular/forms';
 
 export class WarehouseIntakesPageMeta implements PageMeta {
@@ -62,7 +62,7 @@ export class WarehouseIntakesPageMeta implements PageMeta {
             align: 'center',
             width: 150,
             labelFunction: function (params) {
-                // return StatusVars.warehouseIntake[params.data.status].toString();
+                return StatusVars.warehouseIntake[params.data.status].toString();
             }
         },
         {
@@ -82,7 +82,7 @@ export class WarehouseIntakesPageMeta implements PageMeta {
             width: 150,
             labelFunction: function (params) {
                 params.data.invoice_status = !params.data.invoice_status ? 0 : params.data.invoice_status;
-                // return StatusVars.invoiceStatus[params.data.invoice_status].toString();
+                return StatusVars.invoiceStatus[params.data.invoice_status].toString();
             }
         },
     ];
@@ -157,7 +157,7 @@ export class WarehouseWithdrawsPageMeta implements PageMeta {
             align: 'center',
             width: 150,
             labelFunction: function (params) {
-                // return StatusVars.generalStatus[params.data.status].toString();
+                return StatusVars.generalStatus[params.data.status].toString();
             }
         },
     ];

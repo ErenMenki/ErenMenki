@@ -8,7 +8,9 @@ const routes: Routes = [
   { path: 'list-duty-codes', component: DefaultListPageComponent, data: { moduleName: 'hr', pageName: 'dutycodes' } },
   { path: 'edit-duty-code', component: DefaultEditPageComponent, data: { moduleName: 'hr', pageName: 'dutycodes' } },
   { path: 'list-incident-scenes', component: DefaultListPageComponent, data: { moduleName: 'hr', pageName: 'incidentScenes' } },
-  { path: 'edit-incident-scenes', component: DefaultEditPageComponent, data: { moduleName: 'hr', pageName: 'incidentScenes' } },
+  { path: 'edit-incident-scenes', component: DefaultEditPageComponent, data: { moduleName: 'hr', pageName: 'incidentScenes' } },  
+  { path: 'list-users-password-process', component: DefaultListPageComponent, data: { moduleName: 'hr', pageName: 'usersPasswordProcess' } },
+  { path: 'list-visitor-check-out', component: DefaultListPageComponent, data: { moduleName: 'hr', pageName: 'visitorCheckOut' } },
 ];
 
 @NgModule({

@@ -5,6 +5,7 @@ import { DefaultListPageComponent } from '../components/default-list-page/defaul
 import { DefaultEditPageComponent } from '../components/default-edit-page/default-edit-page.component';
 
 const routes: Routes = [
+  { path: 'list-users', component: DefaultListPageComponent, data: {moduleName: 'hr', pageName: 'users'}},
   { path: 'list-duty-codes', component: DefaultListPageComponent, data: { moduleName: 'hr', pageName: 'dutycodes' } },
   { path: 'edit-duty-code', component: DefaultEditPageComponent, data: { moduleName: 'hr', pageName: 'dutycodes' } },
   { path: 'list-incident-scenes', component: DefaultListPageComponent, data: { moduleName: 'hr', pageName: 'incidentScenes' } },

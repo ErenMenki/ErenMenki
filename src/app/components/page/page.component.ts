@@ -230,6 +230,8 @@ export class PageComponent implements OnInit, OnDestroy, OnChanges {
   datagridClickHandler?(event: DataGridEvent) {
     // console.log(event.item);
   }
+  datagridSelectBtnClickHandler?(event: DataGridEvent) {
+  }
   datagridAddBtnClickHandler?(event: DataGridEvent) {
     // this.route.navigate('');
   }

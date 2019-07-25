@@ -25,8 +25,15 @@ const MENUITEMS = [
     name: 'purchasing'
   },
   {
-    state: '/purchasing/material-list',
+    state: '/purchasing/list-material',
     name: 'Stok',
+    type: MenuType.link,
+    icon: 'table_chart',
+    badge: [{ type: 'icon', value: 'home' }, { type: 'button', value: 'test2' }]
+  },
+  {
+    state: '/hr/list-users',
+    name: 'HR USERS',
     type: MenuType.link,
     icon: 'table_chart',
     badge: [{ type: 'icon', value: 'home' }, { type: 'button', value: 'test2' }]

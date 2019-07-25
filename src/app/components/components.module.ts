@@ -43,11 +43,13 @@ import { DefaultEditPageComponent } from './default-edit-page/default-edit-page.
 import { OnlyNumericDirective } from './directives/only-numeric.directive';
 import { NumericFilterComponent } from './datagrid/datagrid.FilterNumeric';
 import { DateFilterComponent } from './datagrid/datagrid.FilterDate';
+import { DropDownFilterComponent } from './datagrid/datagrid.FilterDropdown';
 
 @NgModule({
   declarations: [
     DatagridComponent,
     AutoCompleteFilterComponent,
+    DropDownFilterComponent,
     TextFilterComponent,
     DateFilterComponent,
     NumericFilterComponent,
@@ -73,6 +75,7 @@ import { DateFilterComponent } from './datagrid/datagrid.FilterDate';
     CommonModule,
     AgGridModule.withComponents([
       AutoCompleteFilterComponent,
+      DropDownFilterComponent,
       TextFilterComponent,
       NumericFilterComponent,
       DateFilterComponent,

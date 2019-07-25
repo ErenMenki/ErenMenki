@@ -4,18 +4,18 @@
         id="dataGrid"
         style="width: 100%; height: 100%"
         class="ag-theme-balham"
+        [gridOptions]="gridOptions"
         [rowData]="dataSource" 
         [columnDefs]="columnDefs"
-        [rowSelection]="rowSelection"
         [frameworkComponents]="frameworkComponents"
         (sortChanged)="onGridSort($event)"
         (filterChanged)="onGridFilter($event)"
-        (selectionChanged)="onSelectionChanged($event)"
-        (gridSizeChanged)="onGridSizeChanged($event)"
         (gridReady)="onGridReady($event)"
     ></ag-grid-angular>
 </div>
 
+<button mat-raised-button color="primary" (click)="selectedClicked()" 
+    *ngIf="options['hasSelectButton']">Seç</button>
 <button mat-raised-button color="primary" (click)="addClicked()" 
     *ngIf="dgButtons.hasAddBtn">Ekle</button>
 <button mat-raised-button color="primary" (click)="editClicked()" 

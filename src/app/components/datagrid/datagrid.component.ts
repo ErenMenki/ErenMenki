@@ -6,6 +6,7 @@ import { AutoCompleteFilterComponent } from './datagrid.FilterAutoComplete';
 import { TextFilterComponent } from './datagrid.FilterText';
 import { NumericFilterComponent } from './datagrid.FilterNumeric';
 import { DateFilterComponent } from './datagrid.FilterDate';
+import { DropDownFilterComponent } from './datagrid.FilterDropdown';
 
 
 export interface DataGridColumn {
@@ -56,6 +57,7 @@ export interface DataGridRefreshEvent {
 export interface DataGridEvent {
   index?: number;
   item?: object;
+  selectedItems?: object[];
 }
 @Component({
   selector: 'vias-datagrid',
@@ -76,36 +78,40 @@ export class DatagridComponent implements OnChanges {
   };
   @Output() refresh: EventEmitter<DataGridRefreshEvent> = new EventEmitter<DataGridRefreshEvent>();
   @Output() rowClick: EventEmitter<DataGridEvent> = new EventEmitter<DataGridEvent>();
+  @Output() selectClick: EventEmitter<DataGridEvent> = new EventEmitter<DataGridEvent>();
   @Output() addClick: EventEmitter<DataGridEvent> = new EventEmitter<DataGridEvent>();
   @Output() editClick: EventEmitter<DataGridEvent> = new EventEmitter<DataGridEvent>();
   @Output() deleteClick: EventEmitter<DataGridEvent> = new EventEmitter<DataGridEvent>();
 
   private gridApi;
   private gridColumnApi;
-  selectedRowIndex: number = -1;
-  selectedRowItem: object = {};
+  isMultipleSelect: boolean = false;
   sort: SortObject = { column_name: 'id', sort_type: SortType.Descending };
   filterModel: {};
   columnDefs = [];
   sidebar = 'columns';
-  rowselection;
+  gridOptions;
   frameworkComponents;
-  multipleRowSelection;
   constructor() {
     this.frameworkComponents = {
       AutoCompleteFilter: AutoCompleteFilterComponent,
+      DropDownFilter: DropDownFilterComponent,
       TextFilter: TextFilterComponent,
       NumericFilter: NumericFilterComponent,
       DateFilter: DateFilterComponent,
+    };
+    this.gridOptions = {
+      suppressCellSelection: false,
+      rowSelection: 'single'
     };
   }
 
 
   ngOnChanges() {
-    this.rowselection = 'single';
     if (this.options['multipleRowSelection'] !== undefined &&
       this.options['multipleRowSelection'] === true) {
-      this.multipleRowSelection = 'multiple';
+      this.gridOptions.rowSelection = 'multiple';
+      this.isMultipleSelect = true;
     }
 
     if (this.options['sortObj'] !== undefined) {
@@ -214,10 +220,17 @@ export class DatagridComponent implements OnChanges {
           coldef.filter = 'DateFilter';
 
           // AutoComplete
-        } else if (col.dataType === FieldTypes.DropDown ||
-          col.dataType === FieldTypes.AutoComplete
-        ) {
+        } else if (col.dataType === FieldTypes.AutoComplete) {
           coldef.filter = 'AutoCompleteFilter';
+          if (col.filterDataSource !== undefined) {
+            coldef.filterParams.filterDataSource = col.filterDataSource;
+          } else {
+            coldef.filterParams.filterDataSource = [];
+          }
+
+          // DropDown
+        } else if (col.dataType === FieldTypes.DropDown) {
+          coldef.filter = 'DropDownFilter';
           if (col.filterDataSource !== undefined) {
             coldef.filterParams.filterDataSource = col.filterDataSource;
           } else {
@@ -317,7 +330,7 @@ export class DatagridComponent implements OnChanges {
 
   idLabelFunction(params) {
     let txt: string = '';
-    params.colDef.filterParams.filterDataSource.forEach( obj => {
+    params.colDef.filterParams.filterDataSource.forEach(obj => {
       // tslint:disable-next-line: radix
       if (parseInt(obj.value) === parseInt(params.value)) {
         txt = obj.label;
@@ -390,6 +403,38 @@ export class DatagridComponent implements OnChanges {
     const d: Date = new Date(params.value * 1000);
     return d.toLocaleDateString('tr-TR');
   }
+  addClicked() {
+    this.addClick.emit({});
+  }
+  editClicked() {
+    const selectedRows: any[] = this.gridApi.getSelectedNodes();
+    if (selectedRows.length > 0) {
+      const event: DataGridEvent = {
+        index: selectedRows[0].id,
+        item: selectedRows[0].data,
+      };
+      this.editClick.emit(event);
+    }
+  }
+  deleteClicked() {
+    const selectedRows: any[] = this.gridApi.getSelectedNodes();
+    if (selectedRows.length > 0) {
+      const event: DataGridEvent = {
+        index: selectedRows[0].id,
+        item: selectedRows[0].data,
+      };
+      this.deleteClick.emit(event);
+    }
+  }
+  selectedClicked() {
+    const selectedRows: any[] = this.gridApi.getSelectedRows();
+    if (selectedRows.length > 0) {
+      const event: DataGridEvent = {
+        selectedItems : selectedRows
+      };
+      this.selectClick.emit(event);
+    }
+  }
 
 
 
@@ -397,7 +442,18 @@ export class DatagridComponent implements OnChanges {
 
 
 
-  onSelectionChanged() {
+
+  /*
+    (rowSelected)="onRowSelected($event)"
+    (selectionChanged)="onSelectionChanged($event)"
+    (gridSizeChanged)="onGridSizeChanged($event)"
+    (gridReady)="onGridReady($event)"
+    */
+  onRowSelected($event) {
+    if ($event.node.selected) {
+    }
+  }
+  onSelectionChanged($event) {
     const selectedRows = this.gridApi.getSelectedRows();
     let selectedRowsString: string = '';
     selectedRows.forEach(function (selectedRow, index) {
@@ -406,7 +462,6 @@ export class DatagridComponent implements OnChanges {
       }
       selectedRowsString += selectedRow.athlete;
     });
-    document.querySelector('#selectedRows').innerHTML = selectedRowsString;
   }
   onDataChange($event) {
     const event: DataGridRefreshEvent = {
@@ -418,34 +473,13 @@ export class DatagridComponent implements OnChanges {
     this.refresh.emit(event);
   }
   rowClickHandler(index: number, row: object) {
-    this.selectedRowIndex = index;
-    this.selectedRowItem = row;
-    const event: DataGridEvent = {
-      index: this.selectedRowIndex,
-      item: this.selectedRowItem,
-    };
-    this.rowClick.emit(event);
-  }
-  addClicked() {
-    this.addClick.emit({});
-  }
-  editClicked() {
-    if (this.selectedRowIndex > -1) {
-      const event: DataGridEvent = {
-        index: this.selectedRowIndex,
-        item: this.selectedRowItem,
-      };
-      this.editClick.emit(event);
-    }
-  }
-  deleteClicked() {
-    if (this.selectedRowIndex > -1) {
-      const event: DataGridEvent = {
-        index: this.selectedRowIndex,
-        item: this.selectedRowItem,
-      };
-      this.deleteClick.emit(event);
-    }
+    // this.selectedRowIndex = index;
+    // this.selectedRowItem = row;
+    // const event: DataGridEvent = {
+    //   index: this.selectedRowIndex,
+    //   item: this.selectedRowItem,
+    // };
+    // this.rowClick.emit(event);
   }
   onGridSizeChanged(params) {
     // const gridWidth = document.getElementById('dg-container').offsetWidth;

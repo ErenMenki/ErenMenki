@@ -8,7 +8,7 @@ import { FilterOptions } from './datagrid.component';
     selector: 'vias-filter-cell',
     template: `<select #filterSelect [ngModel]="filterSelect" (ngModelChange)="onChange($event)"></select>`,
 })
-export class AutoCompleteFilterComponent implements IFilterAngularComp, AfterViewInit {
+export class DropDownFilterComponent implements IFilterAngularComp, AfterViewInit {
     private params: IFilterParams;
     private isLocalRefresh: boolean;
     private valueGetter: (rowNode: RowNode) => any;
@@ -32,7 +32,7 @@ export class AutoCompleteFilterComponent implements IFilterAngularComp, AfterVie
         // return this.text !== null && this.text !== undefined && this.text !== '';
     }
 
-    doesFilterPass(params: IDoesFilterPassParams): boolean { 
+    doesFilterPass(params: IDoesFilterPassParams): boolean {
         if (this.isLocalRefresh) {
             const val: any = params.data[this.params.colDef.field];
             // tslint:disable-next-line: radix

@@ -39,6 +39,8 @@ export class DefaultListPageComponent extends PageComponent {
     if (pageMeta.dataGridInitialSort) {
       this.sortObj = pageMeta.dataGridInitialSort;
     }
+    this.datagridOptions['hasSelectButton'] = this.pageMeta.hasSelectButton;
+    this.datagridOptions['multipleRowSelection'] = this.pageMeta.hasMultiSelectDataGrid;
 
     console.log(pageMeta);
     this.refreshData();
@@ -93,8 +95,17 @@ export class DefaultListPageComponent extends PageComponent {
   }
 
 
-  datagridAddBtnClickHandler?(event: DataGridEvent) {
+  datagridSelectBtnClickHandler(event: DataGridEvent) {
+    console.log(event.selectedItems);
+  }
+  datagridAddBtnClickHandler(event: DataGridEvent) {
     console.log(this.pageMeta.editPageName);
     this.route.navigate(['/' + this.moduleName + '/' + this.pageMeta.editPageName]);
+  }
+  datagridEditBtnClickHandler(event: DataGridEvent) {
+    console.log(event.item);
+  }
+  datagridDeleteBtnClickHandler(event: DataGridEvent) {
+    console.log(event.item);
   }
 }

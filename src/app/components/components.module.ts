@@ -21,6 +21,7 @@ import {
   MatIconModule,
   MatGridListModule,
 } from '@angular/material';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { DropdownComponent } from './dropdown/dropdown.component';
 import { RadioComponent } from './radio/radio.component';
@@ -39,12 +40,17 @@ import { PageComponent } from './page/page.component';
 import { DefaultMasterDetailPageComponent } from './default-master-detail-page/default-master-detail-page.component';
 import { DefaultListPageComponent } from './default-list-page/default-list-page.component';
 import { DefaultEditPageComponent } from './default-edit-page/default-edit-page.component';
+import { OnlyNumericDirective } from './directives/only-numeric.directive';
+import { NumericFilterComponent } from './datagrid/datagrid.FilterNumeric';
+import { DateFilterComponent } from './datagrid/datagrid.FilterDate';
 
 @NgModule({
   declarations: [
     DatagridComponent,
     AutoCompleteFilterComponent,
     TextFilterComponent,
+    DateFilterComponent,
+    NumericFilterComponent,
     CheckboxComponent,
     DropdownComponent,
     RadioComponent,
@@ -61,10 +67,16 @@ import { DefaultEditPageComponent } from './default-edit-page/default-edit-page.
     DefaultMasterDetailPageComponent,
     DefaultListPageComponent,
     DefaultEditPageComponent,
+    OnlyNumericDirective,
   ],
   imports: [
     CommonModule,
-    AgGridModule.withComponents([AutoCompleteFilterComponent,TextFilterComponent]),
+    AgGridModule.withComponents([
+      AutoCompleteFilterComponent,
+      TextFilterComponent,
+      NumericFilterComponent,
+      DateFilterComponent,
+    ]),
     ReactiveFormsModule,
     FormsModule,
     MatTableModule,
@@ -75,6 +87,7 @@ import { DefaultEditPageComponent } from './default-edit-page/default-edit-page.
     MatCheckboxModule,
     MatRadioModule,
     MatDatepickerModule,
+    MatMomentDateModule,
     MatNativeDateModule,
     MatAutocompleteModule,
     MatIconModule,

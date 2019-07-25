@@ -204,6 +204,26 @@ const MENUITEMS = [
     icon: 'bar_chart'
   },
   
+  {
+    type: MenuType.divider
+  },
+  {
+    type: MenuType.title,
+    name: 'warehouse'
+  },
+  {
+    state: 'warehouse',
+    name: 'materialWarehouseActions',
+    type: MenuType.sub,
+    icon: 'local_shipping',
+    children: [
+      { state: 'list-warehouse-intakes', name: 'intakeTicketList', type: MenuType.link },
+      { state: 'list-warehouse-withdraws', name: 'withdrawTicketList', type: MenuType.link },
+      { state: 'list-warehouse-project-returns', name: 'materialsFromTheProjectReturnTicket', type: MenuType.link },
+      { state: 'list-warehouse-tansfers', name: 'warehouseTansferTickets', type: MenuType.link },
+      { state: 'list-rental-equipments', name: 'rentalEquipmentList', type: MenuType.link },
+    ]
+  }
 ];
 
 @Injectable()

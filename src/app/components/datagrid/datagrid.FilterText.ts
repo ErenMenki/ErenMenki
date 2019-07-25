@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewContainerRef, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
 
 import { IDoesFilterPassParams, IFilterParams, RowNode } from 'ag-grid-community';
 import { IFilterAngularComp } from 'ag-grid-angular';
@@ -10,19 +10,16 @@ import { FilterOptions } from './datagrid.component';
 })
 export class TextFilterComponent implements IFilterAngularComp, AfterViewInit {
     private params: IFilterParams;
-    private valueGetter: (rowNode: RowNode) => any;
-    public text: string = '';
+    private isLocalRefresh: boolean;
     public value: string = '';
-    private options: Array<FilterOptions>;
+    public valueGetter;
 
-    @ViewChild('filterText', { read: ViewContainerRef }) public theText;
+    @ViewChild('filterText') public theText: ElementRef;
 
     agInit(params: IFilterParams): void {
         this.params = params;
         this.valueGetter = params.valueGetter;
-        if (params.colDef.filterParams !== null) {
-            this.options = params.colDef.filterParams.filterDataSource as Array<FilterOptions>;
-        }
+        this.isLocalRefresh = params['isLocalRefresh'];
     }
 
     isFilterActive(): boolean {
@@ -30,14 +27,16 @@ export class TextFilterComponent implements IFilterAngularComp, AfterViewInit {
     }
 
     doesFilterPass(params: IDoesFilterPassParams): boolean {
-        //  db ye gidecek. hep true gelmesi lazim...
-        return true;
-        // ornek
-        // return this.value.toLowerCase()
-        // .split(" ")
-        // .every((filterWord) => {
-        //     return this.valueGetter(params.node).toString().toLowerCase().indexOf(filterWord) >= 0;
-        // });
+        if (this.isLocalRefresh) {
+            return this.value.toLowerCase()
+            .split(' ')
+            .every((filterWord) => {
+                return this.valueGetter(params.node).toString().toLowerCase().indexOf(filterWord) >= 0;
+            });
+        } else {
+            //  db ye gidecek. hep true gelmesi lazim...
+            return true;
+        }
     }
 
     getModel(): any {
@@ -50,7 +49,8 @@ export class TextFilterComponent implements IFilterAngularComp, AfterViewInit {
 
     ngAfterViewInit(): void {
         window.setTimeout(() => {
-            this.theText.element.nativeElement.focus();
+            this.theText.nativeElement.focus();
+            this.theText.nativeElement.value = this.value;
         });
     }
 

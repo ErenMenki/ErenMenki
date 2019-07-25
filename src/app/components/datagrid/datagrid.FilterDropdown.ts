@@ -10,6 +10,7 @@ import { FilterOptions } from './datagrid.component';
 })
 export class AutoCompleteFilterComponent implements IFilterAngularComp, AfterViewInit {
     private params: IFilterParams;
+    private isLocalRefresh: boolean;
     private valueGetter: (rowNode: RowNode) => any;
     public text: string = '';
     public value: number = -1;
@@ -20,6 +21,7 @@ export class AutoCompleteFilterComponent implements IFilterAngularComp, AfterVie
     agInit(params: IFilterParams): void {
         this.params = params;
         this.valueGetter = params.valueGetter;
+        this.isLocalRefresh = params['isLocalRefresh'];
         if (params.colDef.filterParams !== null) {
             this.options = params.colDef.filterParams.filterDataSource as Array<FilterOptions>;
         }
@@ -30,13 +32,14 @@ export class AutoCompleteFilterComponent implements IFilterAngularComp, AfterVie
         // return this.text !== null && this.text !== undefined && this.text !== '';
     }
 
-    doesFilterPass(params: IDoesFilterPassParams): boolean {
-        // Burasi iptal
-        // cunku db ye gidecek. hep true gelmesi lazim...
-        return true;
-        // const val: any = params.data[this.params.colDef.field];
-        // // tslint:disable-next-line: radix
-        // return this.value === parseInt(val);
+    doesFilterPass(params: IDoesFilterPassParams): boolean { 
+        if (this.isLocalRefresh) {
+            const val: any = params.data[this.params.colDef.field];
+            // tslint:disable-next-line: radix
+            return this.value === parseInt(val);
+        } else {
+            return true;
+        }
     }
 
     getModel(): any {

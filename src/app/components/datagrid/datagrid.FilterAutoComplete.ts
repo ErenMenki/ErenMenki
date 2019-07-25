@@ -10,11 +10,11 @@ import { FieldTypes } from 'src/app/core/FieldTypes';
 
 @Component({
     selector: 'vias-filter-cell',
-    // template: `<select #filterSelect [ngModel]="filterSelect" (ngModelChange)="onChange($event)"></select>`,
     template: `<vias-autocomplete [form]="form" [item]="item" (onchange)="onChange($event)"></vias-autocomplete>`,
 })
 export class AutoCompleteFilterComponent implements IFilterAngularComp, AfterViewInit {
     private params: IFilterParams;
+    private isLocalRefresh: boolean;
     private valueGetter: (rowNode: RowNode) => any;
     public text: string = '';
     public value: number = -1;
@@ -33,6 +33,7 @@ export class AutoCompleteFilterComponent implements IFilterAngularComp, AfterVie
         };
         this.params = params;
         this.valueGetter = params.valueGetter;
+        this.isLocalRefresh = params['isLocalRefresh'];
         if (params.colDef.filterParams !== null) {
             this.options = params.colDef.filterParams.filterDataSource as Array<FilterOptions>;
         }
@@ -40,16 +41,16 @@ export class AutoCompleteFilterComponent implements IFilterAngularComp, AfterVie
 
     isFilterActive(): boolean {
         return this.value !== null && this.value !== undefined && this.value !== -1;
-        // return this.text !== null && this.text !== undefined && this.text !== '';
     }
 
     doesFilterPass(params: IDoesFilterPassParams): boolean {
-        // Burasi iptal
-        // cunku db ye gidecek. hep true gelmesi lazim...
-        return true;
-        // const val: any = params.data[this.params.colDef.field];
-        // // tslint:disable-next-line: radix
-        // return this.value === parseInt(val);
+        if (this.isLocalRefresh) {
+            const val: any = params.data[this.params.colDef.field];
+            // tslint:disable-next-line: radix
+            return this.value === parseInt(val);
+        } else {
+            return true;
+        }
     }
 
     getModel(): any {
